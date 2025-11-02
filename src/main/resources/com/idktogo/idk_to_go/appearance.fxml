@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.AppearanceController"
+            prefWidth="400" prefHeight="750"
+            style="-fx-background-color: #ffffff;">
+
+    <stylesheets>
+        <URL value="@styles/global.css" />
+    </stylesheets>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #00BFFF">
+            <Button text="← Back"
+                    onAction="#goBack" />
+            <Label text="Appearance" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 30;">
+            <Label text="Select Theme Mode" style="-fx-font-size: 18px;" />
+
+            <!-- Toggle Buttons for Theme Selection -->
+            <ToggleButton fx:id="lightModeToggle" text="Light Mode"
+                          onAction="#switchToLightMode"
+                          style="-fx-pref-width: 200; -fx-font-size: 16px;" />
+
+            <ToggleButton fx:id="darkModeToggle" text="Dark Mode"
+                          onAction="#switchToDarkMode"
+                          style="-fx-pref-width: 200; -fx-font-size: 16px;" />
+        </VBox>
+    </center>
+</BorderPane>

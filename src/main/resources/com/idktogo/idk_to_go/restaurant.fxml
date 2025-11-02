@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.RestaurantController"
+            prefWidth="400" prefHeight="750"
+            style="-fx-background-color: #ffffff;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #00BFFF">
+            <Button text="← Back"
+                    onAction="#goBack" />
+            <Label fx:id="nameLabel" text="Restaurant Name" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 20;">
+            <ImageView fx:id="logoImage" fitWidth="180" preserveRatio="true" />
+
+            <Label fx:id="categoryLabel" text="Category: ---"
+                   style="-fx-font-size: 14px;" />
+
+            <Label fx:id="locationLabel" text="Location"
+                   onMouseClicked="#openInMaps"
+                   style="-fx-font-size: 14px; -fx-text-fill: #1565c0; -fx-underline: true; -fx-cursor: hand;" />
+
+            <!-- Scrollable Menu List -->
+            <ScrollPane fx:id="menuScroll" fitToWidth="true" prefHeight="350"
+                        style="-fx-background-color: white;">
+                <VBox fx:id="menuList" spacing="10" style="-fx-padding: 5;" />
+            </ScrollPane>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" spacing="15" style="-fx-padding: 15;">
+            <Button text="👍 Like" fx:id="likeButton" onAction="#likeRestaurant"
+                    style="-fx-background-color: #e8f5e9;" />
+            <Button text="👎 Dislike" fx:id="dislikeButton" onAction="#dislikeRestaurant"
+                    style="-fx-background-color: #ffebee;" />
+        </HBox>
+    </bottom>
+</BorderPane>

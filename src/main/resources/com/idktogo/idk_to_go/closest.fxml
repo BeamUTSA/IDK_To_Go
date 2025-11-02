@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.idktogo.idk_to_go.controller.ClosestController"
+      spacing="15"
+      alignment="CENTER"
+      style="-fx-padding: 20;">
+
+    <Label text="Find Closest Restaurants"
+           style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+    <Button text="Open in Google Maps"
+            onAction="#openMaps"
+            style="-fx-font-size: 16px;"/>
+
+    <Button text="← Back"
+            onAction="#goBack" />
+</VBox>

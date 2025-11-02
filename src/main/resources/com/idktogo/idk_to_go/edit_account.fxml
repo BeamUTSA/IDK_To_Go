@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.EditAccountController"
+            prefWidth="400" prefHeight="750"
+            style="-fx-background-color: #ffffff;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #00BFFF">
+            <Button text="← Back"
+                    onAction="#goBack" />
+            <Label text="Edit Account" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="14" style="-fx-padding: 20;">
+
+            <Label text="Update Account Info" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <TextField fx:id="usernameField" promptText="New Username" />
+            <TextField fx:id="emailField" promptText="New Email" />
+            <HBox spacing="10">
+                <TextField fx:id="firstNameField" promptText="First Name" />
+                <TextField fx:id="lastNameField" promptText="Last Name" />
+            </HBox>
+            <PasswordField fx:id="passwordField" promptText="New Password" />
+
+            <Button text="Save Changes" onAction="#saveChanges"
+                    style="-fx-padding: 8 20; -fx-background-color: #2E86DE; -fx-text-fill: white;" />
+
+            <Separator style="-fx-padding: 10 0;" />
+
+            <Label text="Danger Zone" style="-fx-font-size: 16px; -fx-text-fill: #C0392B;" />
+
+            <Button text="Clear History" onAction="#clearHistory"
+                    style="-fx-background-color: #FADBD8; -fx-text-fill: #922B21;" />
+
+            <Button text="Delete Account" onAction="#deleteAccount"
+                    style="-fx-background-color: #F5B7B1; -fx-text-fill: #7B241C;" />
+        </VBox>
+    </center>
+</BorderPane>

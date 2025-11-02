@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/b321d522-7ce0-46fb-b79b-6b3b78d153a5/console.sql" value="b321d522-7ce0-46fb-b79b-6b3b78d153a5" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/b321d522-7ce0-46fb-b79b-6b3b78d153a5/console_1.sql" value="b321d522-7ce0-46fb-b79b-6b3b78d153a5" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/data/SQLiteManager.java" value="b321d522-7ce0-46fb-b79b-6b3b78d153a5" />
+  </component>
+</project>

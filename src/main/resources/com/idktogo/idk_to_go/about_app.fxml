@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.Image?>
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.AboutAppController"
+            prefWidth="400" prefHeight="750"
+            style="-fx-background-color: #ffffff;">
+
+    <stylesheets>
+        <URL value="@styles/global.css" />
+    </stylesheets>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #00BFFF">
+            <Button text="← Back"
+                    onAction="#goBack" />
+            <Label text="About IDK To Go" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 30;">
+            <ImageView fitWidth="120" preserveRatio="true">
+                <Image url="@images/IDK_To_Go_Logo.png" />
+            </ImageView>
+
+            <Label text="IDK To Go" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+            <Label text="Version 1.0 (Beta)"
+                   style="-fx-font-size: 14px; -fx-text-fill: #555;" />
+
+            <TextArea editable="false" wrapText="true"
+                      style="-fx-pref-width: 300; -fx-pref-height: 200; -fx-background-color: #f5f5f5; -fx-padding: 10;">
+                IDK To Go is a lightweight food recommendation app to help guide hungry minds in
+                deciding where to eat next. Whether you’re curious, lazy, or just tired of choices
+                — let us narrow it down for you.
+            </TextArea>
+
+            <Label text="Developed by: Team IDK"
+                   style="-fx-font-size: 14px; -fx-text-fill: #555;" />
+        </VBox>
+    </center>
+</BorderPane>

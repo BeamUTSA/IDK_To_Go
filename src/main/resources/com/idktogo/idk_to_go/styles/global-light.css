@@ -1,0 +1,28 @@
+/* Light Theme Base */
+.root-pane {
+    -fx-background-color: #f7f7f7;
+    -fx-text-fill: #222;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #2E86DE;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #1B4F72;
+}
+
+.button:pressed {
+    -fx-background-color: #154360;
+}
+
+/* Scroll Pane */
+.scroll-pane {
+    -fx-background: #fff;
+    -fx-border-color: #ddd;
+}

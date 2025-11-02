@@ -1,0 +1,28 @@
+/* Dark Theme Base */
+.root-pane {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #555;
+    -fx-text-fill: #fff;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #777;
+}
+
+.button:pressed {
+    -fx-background-color: #444;
+}
+
+/* Scroll Pane */
+.scroll-pane {
+    -fx-background: #2e2e2e;
+    -fx-border-color: #444;
+}

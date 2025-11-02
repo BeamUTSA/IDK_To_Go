@@ -74,7 +74,7 @@ public class MainController {
             RestaurantDAO.getRestaurantById(entry.restaurantId())
                     .ifPresent(restaurant -> {
                         Button historyBtn = new Button(restaurant.name());
-                        historyBtn.setStyle("-fx-font-size: 16; -fx-background-color: transparent; -fx-text-fill: #222;");
+                        historyBtn.getStyleClass().add("history-button");
                         historyBtn.setOnAction(_ -> Navigation.load(
                                 "/com/idktogo/idk_to_go/restaurant.fxml",
                                 controller -> ((RestaurantController) controller).setRestaurantId(restaurant.id())
@@ -83,6 +83,7 @@ public class MainController {
                     });
         }
     }
+
 
     @FXML
     private void openClosest() {

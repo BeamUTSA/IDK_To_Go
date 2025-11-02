@@ -3,29 +3,28 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import java.net.URL?>
+
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.idktogo.idk_to_go.controller.LoginController"
             prefWidth="400" prefHeight="750"
-            style="-fx-background-color: #00BFFF;">
-
-    <stylesheets>
-        <URL value="@styles/global.css" />
-    </stylesheets>
+            styleClass="root-pane">
 
     <center>
         <VBox alignment="TOP_CENTER" spacing="10" style="-fx-padding: 30;">
-            <Label text="Welcome Back" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+
+            <Label text="Welcome Back" styleClass="title-label" />
 
             <TextField fx:id="usernameField" promptText="Username" />
             <PasswordField fx:id="passwordField" promptText="Password" />
 
             <CheckBox fx:id="rememberMeCheck" text="Remember me" />
 
-            <Button text="Login" onAction="#handleLogin" prefWidth="200" style="-fx-font-size: 14;" />
+            <Button text="Login" onAction="#handleLogin" prefWidth="200" />
             <Button text="Create Account" onAction="#goToRegister" prefWidth="200" />
+
         </VBox>
     </center>
+
 </BorderPane>

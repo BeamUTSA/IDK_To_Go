@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootPane" prefHeight="750" prefWidth="400" style="-fx-background-color: #f7f7f7; -fx-padding: 0;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idktogo.idk_to_go.controller.MainController">
-
-    <stylesheets>
-        <URL value="@styles/global.css" />
-    </stylesheets>
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane fx:id="rootPane"
+            prefHeight="750" prefWidth="400"
+            styleClass="root-pane"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.MainController">
 
     <!-- Top Bar -->
     <top>
-        <HBox alignment="CENTER" prefHeight="100" style="-fx-background-color: #00BFFF;">
-            <Button fx:id="optionsButton" onAction="#openOptions" style="-fx-font-size: 24px; -fx-background-color: transparent; -fx-text-fill: #333;" text="≡" />
-
-            <ImageView fitHeight="100" preserveRatio="true" style="-fx-translate-x: 92;">
+        <HBox fx:id="topBar" alignment="CENTER" prefHeight="100" styleClass="homebar">
+            <Button fx:id="optionsButton" onAction="#openOptions" styleClass="icon-button" text="≡" />
+            <ImageView fitHeight="108.0" fitWidth="116.0" preserveRatio="true" style="-fx-translate-x: 92;">
                 <Image url="@images/IDK_To_Go_Logo.png" />
             </ImageView>
-
-            <Region HBox.hgrow="ALWAYS" /> <!-- keeps perfect center alignment -->
+            <Region HBox.hgrow="ALWAYS" />
         </HBox>
     </top>
 
-
-
     <!-- Center Content -->
     <center>
-        <BorderPane style="-fx-background-color: white;">
-
+        <BorderPane styleClass="content-pane">
 
             <!-- Hot RN Section -->
             <left>
-                <VBox fx:id="hotBox" alignment="TOP_CENTER" prefWidth="200" style="-fx-background-color: #fff; -fx-border-color: #ddd; -fx-border-width: 0 1 0 0;">
+                <VBox fx:id="hotBox" alignment="TOP_CENTER" prefWidth="200" styleClass="section-pane left-section">
 
-                    <!-- Button wrapping entire Hot RN card -->
-                    <Button fx:id="hotButton" onAction="#openRestaurantScene" style="-fx-background-color: transparent; -fx-padding: 10; -fx-cursor: hand;">
+                    <Button fx:id="hotButton" onAction="#openRestaurantScene" styleClass="card-button">
                         <graphic>
                             <VBox alignment="CENTER">
-                                <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Hot RN" />
-                                <Label fx:id="hotRestaurant" style="-fx-font-size: 18px; -fx-text-fill: #222;" text="Most popular (TBD)" />
+                                <Label styleClass="card-title" text="Hot RN" />
+                                <Label fx:id="hotRestaurant" styleClass="card-subtitle" text="Most popular (TBD)" />
                                 <ImageView fx:id="restaurantLogo" fitWidth="90" preserveRatio="true" />
                             </VBox>
                         </graphic>
@@ -50,32 +48,51 @@
                 </VBox>
             </left>
 
-            <!-- Middle filler (same as original) -->
+            <!-- Middle Section -->
             <center>
-                <HBox fx:id="middleSection" alignment="CENTER" prefHeight="500" spacing="0" style="-fx-background-color: white;" />
+                <HBox fx:id="middleSection" alignment="CENTER" prefHeight="500" styleClass="middle-section" />
             </center>
 
             <!-- History Section -->
+            <!-- History Section -->
             <right>
-                <VBox fx:id="historySection" alignment="TOP_CENTER" prefWidth="200" spacing="5" style="-fx-background-color: white;">
-                    <Label fx:id="historyLabel" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-padding: 10 0 5 10; -fx-text-fill: #222;" text="History" />
-                    <ScrollPane fx:id="historyScroll" hbarPolicy="NEVER" style="-fx-background-color: white;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-                        <VBox fx:id="historyBox" fillWidth="true" spacing="0" style="-fx-background-color: white; -fx-padding: 0;" />
+                <VBox fx:id="historySection"
+                      alignment="TOP_CENTER"
+                      prefWidth="200"
+                      spacing="5"
+                      styleClass="section-pane"
+                      VBox.vgrow="ALWAYS">
+
+                    <Label fx:id="historyLabel" styleClass="section-title" text="History" />
+
+                    <ScrollPane fx:id="historyScroll"
+                                hbarPolicy="NEVER"
+                                vbarPolicy="ALWAYS"
+                                fitToWidth="true"
+                                fitToHeight="true"
+                                styleClass="scroll-pane"
+                                VBox.vgrow="ALWAYS">
+                        <VBox fx:id="historyBox"
+                              fillWidth="true"
+                              spacing="0"
+                              styleClass="scroll-content" />
                     </ScrollPane>
+
                 </VBox>
             </right>
+
 
         </BorderPane>
     </center>
 
     <!-- Bottom Navigation Bar -->
     <bottom>
-        <HBox alignment="CENTER" spacing="15" style="-fx-background-color: #00BFFF;">
+        <HBox alignment="CENTER" spacing="15" styleClass="toolbar">
             <padding>
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
 
-            <Button fx:id="closestButton" onAction="#openClosest" prefWidth="100" style="-fx-background-color: transparent;" text="">
+            <Button fx:id="closestButton" onAction="#openClosest" prefWidth="100" styleClass="nav-button">
                 <graphic>
                     <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
                         <Image url="@images/closest.png" />
@@ -83,7 +100,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="quizButton" onAction="#openQuiz" prefWidth="100" style="-fx-background-color: transparent;" text="">
+            <Button fx:id="quizButton" onAction="#openQuiz" prefWidth="100" styleClass="nav-button">
                 <graphic>
                     <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
                         <Image url="@images/quiz.png" />
@@ -91,7 +108,7 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="trendingButton" onAction="#openTrending" prefWidth="100" style="-fx-background-color: transparent;" text="">
+            <Button fx:id="trendingButton" onAction="#openTrending" prefWidth="100" styleClass="nav-button">
                 <graphic>
                     <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
                         <Image url="@images/trending.png" />

@@ -4,24 +4,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.Image?>
 <?import java.net.URL?>
+
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.idktogo.idk_to_go.controller.AboutAppController"
             prefWidth="400" prefHeight="750"
-            style="-fx-background-color: #ffffff;">
+            styleClass="root-pane">
 
-    <stylesheets>
-        <URL value="@styles/global.css" />
-    </stylesheets>
+    <!-- Removed <stylesheets> block; theme is applied via ThemeManager -->
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #00BFFF">
-            <Button text="← Back"
-                    onAction="#goBack" />
-            <Label text="About IDK To Go" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="toolbar">
+            <Button text="← Back" onAction="#goBack" />
+            <Label text="About IDK To Go" styleClass="title-label" />
         </HBox>
     </top>
 
@@ -31,20 +28,22 @@
                 <Image url="@images/IDK_To_Go_Logo.png" />
             </ImageView>
 
-            <Label text="IDK To Go" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+            <Label text="IDK To Go" styleClass="title-label" />
 
-            <Label text="Version 1.0 (Beta)"
-                   style="-fx-font-size: 14px; -fx-text-fill: #555;" />
+            <Label text="Version 1.0 (Beta)" styleClass="subtitle-label" />
 
-            <TextArea editable="false" wrapText="true"
-                      style="-fx-pref-width: 300; -fx-pref-height: 200; -fx-background-color: #f5f5f5; -fx-padding: 10;">
+            <TextArea fx:id="infoBox"
+                      editable="false"
+                      wrapText="true"
+                      prefWidth="300"
+                      prefHeight="200"
+                      styleClass="info-box">
                 IDK To Go is a lightweight food recommendation app to help guide hungry minds in
                 deciding where to eat next. Whether you’re curious, lazy, or just tired of choices
                 — let us narrow it down for you.
             </TextArea>
 
-            <Label text="Developed by: Team IDK"
-                   style="-fx-font-size: 14px; -fx-text-fill: #555;" />
+            <Label text="Developed by: Team IDK" styleClass="subtitle-label" />
         </VBox>
     </center>
 </BorderPane>

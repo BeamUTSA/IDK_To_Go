@@ -1,28 +1,40 @@
-/* Light Theme Base */
-.root-pane {
-    -fx-background-color: #f7f7f7;
-    -fx-text-fill: #222;
+/**************************************************************
+ * LIGHT THEME — sets looked-up colors for a bright UI
+ **************************************************************/
+
+.root, .root-pane {
+    -color-bg:            #f7f7f7;
+    -color-text:          #222222;
+    -color-muted:         #555555;
+    -color-accent:        #00BFFF;
+    -color-on-accent:     #ffffff;
+    -color-card-bg:       #ffffff;
+    -color-border:        #dddddd;
+    -color-toolbar:       #00BFFF;
+    -color-link:          #1565c0;
+
+    -color-like:          #e8f5e9;
+    -color-dislike:       #ffebee;
+
+    -color-hover:         rgba(0,0,0,0.05);
+    -color-hover-strong:  rgba(0,0,0,0.08);
+    -color-selection:     #d7ecff;
+    -color-on-selection:  #003366;
+
+    -color-tab:           #e9eef3;
+    -color-tab-hover:     #dee8f0;
+
+    -color-trending-bg:   #ffffff;
 }
 
-/* Buttons */
-.button {
-    -fx-background-color: #2E86DE;
-    -fx-text-fill: white;
-    -fx-background-radius: 10;
-    -fx-padding: 8 16;
-    -fx-cursor: hand;
+/* Ensure key headings read correctly in light mode */
+.card-title,
+.section-title,
+#historyLabel {
+    -fx-text-fill: -color-text;
 }
-
-.button:hover {
-    -fx-background-color: #1B4F72;
-}
-
-.button:pressed {
-    -fx-background-color: #154360;
-}
-
-/* Scroll Pane */
-.scroll-pane {
-    -fx-background: #fff;
-    -fx-border-color: #ddd;
+.card-subtitle,
+.history-button,
+.subtitle-label {
+    -fx-text-fill: -color-muted;
 }

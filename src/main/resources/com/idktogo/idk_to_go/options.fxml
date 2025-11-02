@@ -1,31 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
+<?import java.net.URL?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="750" prefWidth="400" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idktogo.idk_to_go.controller.OptionsController">
-
-    <stylesheets>
-        <URL value="@styles/global.css" />
-    </stylesheets>
+<BorderPane prefHeight="750" prefWidth="400"
+            styleClass="root-pane"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.OptionsController">
 
     <!-- Top: Back button + Title -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 12; -fx-background-color: #00BFFF;">
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="toolbar">
             <Button onAction="#goBack" text="← Back" />
-            <Label alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="title-label" text="Options" />
+            <Label alignment="CENTER"
+                   prefHeight="45.0" prefWidth="200.0"
+                   styleClass="title-label"
+                   text="Options" />
         </HBox>
     </top>
 
     <!-- Content -->
     <center>
         <VBox alignment="TOP_CENTER" spacing="16" style="-fx-padding: 24;">
-            <Button fx:id="editAccountButton" onAction="#openEditAccount" prefWidth="250" text="Edit Account" />
-            <Button fx:id="appearanceButton" onAction="#openAppearanceSettings" prefWidth="250" text="App Appearance" />
-            <Button fx:id="aboutAppButton" onAction="#openAboutApp" prefWidth="250" text="About App" />
-            <Button fx:id="adminButton" onAction="#openAdmin" styleClass="option-button" text="Admin Panel" visible="false" />
-            <Button fx:id="logoutButton" onAction="#logout" prefWidth="250" style="-fx-text-fill: red;" text="Log Out" />
+            <Button fx:id="editAccountButton"
+                    onAction="#openEditAccount"
+                    prefWidth="250"
+                    text="Edit Account" />
+
+            <Button fx:id="appearanceButton"
+                    onAction="#openAppearanceSettings"
+                    prefWidth="250"
+                    text="App Appearance" />
+
+            <Button fx:id="aboutAppButton"
+                    onAction="#openAboutApp"
+                    prefWidth="250"
+                    text="About App" />
+
+            <Button fx:id="adminButton"
+                    onAction="#openAdmin"
+                    prefWidth="250"
+                    styleClass="option-button"
+                    text="Admin Panel"
+                    visible="false" />
+
+            <Button fx:id="logoutButton"
+                    onAction="#logout"
+                    prefWidth="250"
+                    styleClass="logout-button"
+                    text="Log Out" />
         </VBox>
     </center>
 

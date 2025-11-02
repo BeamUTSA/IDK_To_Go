@@ -2,40 +2,35 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import java.net.URL?>
+
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.idktogo.idk_to_go.controller.AdminController"
             prefWidth="400" prefHeight="750"
-            style="-fx-background-color: #ffffff;">
-
-    <stylesheets>
-        <URL value="@styles/global.css" />
-    </stylesheets>
+            styleClass="root-pane">
 
     <!-- Top: Header with Back Button -->
     <top>
-        <HBox alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #00BFFF">
-            <Button text="← Back"
-                    onAction="#goBack" />
-            <Label text="Admin Panel" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-padding: 0 0 0 10;" />
+        <HBox alignment="CENTER_LEFT" styleClass="toolbar">
+            <Button text="← Back" onAction="#goBack" />
+            <Label text="Admin Panel" styleClass="title-label" />
         </HBox>
     </top>
 
     <!-- Center: Scrollable List of Restaurants -->
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: white;">
-            <VBox fx:id="restaurantList" spacing="10" style="-fx-padding: 15;" />
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox fx:id="restaurantList" spacing="10" styleClass="padded-box" />
         </ScrollPane>
     </center>
 
     <!-- Bottom: Global Admin Actions -->
     <bottom>
-        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 15;">
-            <Button text="Add New Restaurant" onAction="#addRestaurant" style="-fx-font-size: 14px;"/>
-            <Button text="Reset Weekly Stats" onAction="#resetWeeklyStats" style="-fx-font-size: 14px;"/>
-            <Button text="Clear All User Histories" onAction="#clearAllHistory" style="-fx-font-size: 14px; -fx-background-color: #ffdddd;"/>
+        <VBox spacing="10" alignment="CENTER" styleClass="padded-box">
+            <Button text="Add New Restaurant" onAction="#addRestaurant" />
+            <Button text="Reset Weekly Stats" onAction="#resetWeeklyStats" />
+            <Button text="Clear All User Histories" onAction="#clearAllHistory" styleClass="danger-button" />
         </VBox>
     </bottom>
 

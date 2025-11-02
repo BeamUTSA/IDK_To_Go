@@ -1,28 +1,92 @@
-/* Dark Theme Base */
-.root-pane {
-    -fx-background-color: #1e1e1e;
-    -fx-text-fill: #e0e0e0;
+/**************************************************************
+ * DARK THEME — Discord-style palette with accent #1e90FF
+ **************************************************************/
+
+/* language=CSS */
+
+.root, .root-pane {
+    -color-bg:            #2b2d31;         /* main background */
+    -color-text:          #ffffff;         /* primary text */
+    -color-muted:         #b5bac1;         /* secondary text */
+    -color-accent:        #1e90FF;         /* new accent per your choice */
+    -color-on-accent:     #ffffff;
+    -color-card-bg:       #313338;         /* card/panel bg */
+    -color-border:        rgba(255,255,255,0.07);
+    -color-toolbar:       #1e1f22;         /* header */
+    -color-link:          #64b5f6;
+
+    -color-like:          #335533;
+    -color-dislike:       #663333;
+
+    -color-hover:         rgba(255,255,255,0.08);
+    -color-hover-strong:  rgba(255,255,255,0.12);
+    -color-selection:     #005a99;         /* focused list item */
+    -color-on-selection:  #ffffff;
+
+    -color-tab:           #1e1f22;         /* unselected tab bg */
+    -color-tab-hover:     #3a3c43;
+
+    -color-trending-bg:   #2b2d31;
 }
 
-/* Buttons */
-.button {
-    -fx-background-color: #555;
-    -fx-text-fill: #fff;
-    -fx-background-radius: 10;
-    -fx-padding: 8 16;
-    -fx-cursor: hand;
+/* Dark-mode readability across key labels */
+.card-title,
+.section-title,
+.title-label {
+    -fx-text-fill: -color-text;
+}
+.card-subtitle,
+.subtitle-label,
+.trending-score {
+    -fx-text-fill: -color-muted;
 }
 
-.button:hover {
-    -fx-background-color: #777;
+/* Toolbar/Homebar refined */
+.toolbar, .homebar {
+    -fx-background-color: -color-toolbar;
+    -fx-border-color: -color-border;
+    -fx-border-width: 0 0 1 0;
 }
 
-.button:pressed {
-    -fx-background-color: #444;
+/* Trending specifics */
+.trending-pane .scroll-pane {
+    -fx-background-color: -color-trending-bg;
+    -fx-border-color: -color-border;
 }
 
-/* Scroll Pane */
-.scroll-pane {
-    -fx-background: #2e2e2e;
-    -fx-border-color: #444;
+/* Tabs: selected gets accent, hover softens */
+.tab-button {
+    -fx-background-color: -color-tab;
+    -fx-text-fill: -color-text;
+}
+.tab-button:hover {
+    -fx-background-color: -color-tab-hover;
+}
+.tab-button:selected,
+.tab-button:focused {
+    -fx-background-color: -color-accent;
+    -fx-text-fill: -color-on-accent;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0.3, 0, 2);
+}
+
+/* History buttons: strong focus for dark backgrounds */
+.history-button {
+    -fx-text-fill: -color-text;
+}
+.history-button:focused,
+.history-button:armed,
+.history-button:selected {
+    -fx-background-color: -color-selection;
+    -fx-text-fill: -color-on-selection;
+}
+
+/* Card button (Hot RN): subtle, not blue-filled */
+.card-button:hover {
+    -fx-background-color: -color-hover;
+}
+.card-button:focused,
+.card-button:armed,
+.card-button:selected {
+    -fx-background-color: -color-hover-strong;
 }

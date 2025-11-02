@@ -47,6 +47,7 @@ public final class ThemeManager {
         } else {
             scene.getStylesheets().add(require(LIGHT).toExternalForm());
         }
+        System.out.println(scene.getStylesheets());
     }
 
     private static URL require(String path) {

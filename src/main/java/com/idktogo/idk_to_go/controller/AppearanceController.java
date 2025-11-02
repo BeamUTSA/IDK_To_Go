@@ -50,9 +50,9 @@ public class AppearanceController {
 
     private void applyTheme(ThemeManager.Theme theme) {
         ThemeManager.setActiveTheme(theme);
-        Scene scene = stage.getScene();
 
-        // Re-apply theme for this window
+        // Fetch Scene from any visible UI component
+        Scene scene = lightModeToggle.getScene();
         if (scene != null) {
             ThemeManager.applyTheme(scene);
         }
@@ -60,6 +60,6 @@ public class AppearanceController {
 
     @FXML
     private void goBack() {
-        Navigation.load("com/idktogo/idk_to_go/options.fxml"); // Close only this dialog/window
+        Navigation.load("/com/idktogo/idk_to_go/options.fxml");
     }
 }

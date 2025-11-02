@@ -4,33 +4,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import java.net.URL?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.idktogo.idk_to_go.controller.MenuController"
-      spacing="15" style="-fx-padding: 15; -fx-background-color: #f7f7f7;">
-
-    <stylesheets>
-        <URL value="@styles/global.css" />
-    </stylesheets>
+      spacing="15"
+      styleClass="root-pane">
 
     <!-- Header with Back Button -->
-    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #00BFFF">
-        <Button text="← Back"
-                onAction="#goBack" />
-        <Label fx:id="restaurantNameLabel" text="Restaurant Menu" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="toolbar">
+        <Button text="← Back" onAction="#goBack" />
+        <Label fx:id="restaurantNameLabel" text="Restaurant Menu" styleClass="title-label" />
     </HBox>
 
     <!-- Menu Items List -->
-    <ScrollPane fitToWidth="true">
-        <VBox fx:id="menuItemsBox" spacing="10" style="-fx-padding: 5;"/>
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+        <VBox fx:id="menuItemsBox" spacing="10" styleClass="padded-box" />
     </ScrollPane>
 
     <!-- Add New Menu Item Row -->
-    <HBox spacing="10">
+    <HBox spacing="10" styleClass="padded-box">
         <TextField fx:id="itemNameField" promptText="Item Name" />
         <TextField fx:id="itemPriceField" promptText="Price" />
-        <Button text="Add Item" onAction="#addMenuItem"/>
+        <Button text="Add Item" onAction="#addMenuItem" />
     </HBox>
 
 </VBox>

@@ -1,107 +1,172 @@
 # IDK To Go
-IDK To Go is a JavaFX-based desktop application designed to help users decide where to eat by combining user interaction, restaurant tracking, popularity ranking, and a future AI-driven quiz system. The project follows an MVC-inspired architecture and uses a local SQLite database for persistent storage.
+
+IDK To Go is a JavaFX-based desktop application that helps users decide where to eat by combining user interaction, restaurant tracking, and popularity-based scoring.  
+It follows an MVC-inspired architecture and uses a remote MySQL database (hosted on Railway) with asynchronous DAO operations.
+
+---
 
 ## Features
+
 ### Core Functionality
-- User account system with login, registration, profile updates, and deletion
-- Persistent session handling and theme memory
-- Restaurant viewing with score, trending, and user history tracking
-- Options menu for appearance settings, account management, and logout
-- Admin-only panel for elevated management features
-- Local database (SQLite) storing users, restaurants, likes, history, and scores
+- User account system with registration, login, updates, and deletion  
+- Persistent session handling through SessionManager  
+- Restaurant browsing with menus, likes/dislikes, and user history tracking  
+- Admin panel for managing restaurants, menus, and weekly stats  
+- Asynchronous MySQL operations using CompletableFuture  
+- Secure JDBC logic with parameterized PreparedStatements  
 
 ### UI and Navigation
-- Navigation helper class for scene switching and stage injection
-- ThemeManager for global dark/light theme support
-- FXML-based view structure styled with CSS
-- Logical separation of controllers for maintainability
+- FXML-based interface styled with JavaFX CSS  
+- Navigation helper for scene management  
+- ThemeManager for light/dark theme switching  
+- Modular controller structure for maintainability  
 
-### Upcoming / Planned
-- AI-generated food decision quiz
-- Cloud sync or online DB migration
-- Mobile deployment or JavaFX port alternatives
-- Extended admin features and analytics dashboards
+### Planned / Upcoming
+- AI-generated food decision quiz  
+- Mobile or web deployment  
+- Admin analytics dashboard  
+- Cloud-based user data syncing  
+
+---
 
 ## Technology Stack
-| Component       | Technology |
-|-----------------|------------|
-| Language        | Java 21 |
-| UI Framework    | JavaFX 21 |
-| Build Tool      | Maven |
-| Database        | SQLite (via JDBC) |
-| Architecture    | MVC-style separation (`controller`, `dao`, `model`, `core`) |
-| Styling         | JavaFX CSS |
+
+| Component | Technology |
+|------------|-------------|
+| Language | Java 21 |
+| UI Framework | JavaFX 21 |
+| Build Tool | Maven |
+| Database | MySQL (Railway) |
+| Database Access | JDBC with HikariCP |
+| Architecture | MVC-style (controller / dao / model / service / core) |
+| Async Handling | CompletableFuture |
+| Styling | JavaFX CSS |
 | Version Control | Git / GitHub |
 
+---
+
 ## Project Structure
+
+```
 src/main/java/com/idktogo/idk_to_go/
 │
-├─ controller/         # FXML controllers
-├─ core/               # Navigation, ThemeManager, app bootstrap utilities
-├─ dao/                # Database access and queries
-├─ model/              # Records / data models
-├─ service/            # Business logic and history tracking
+├─ controller/        # JavaFX controllers
+├─ core/              # Navigation, ThemeManager, SessionManager, DatabaseConnector
+├─ dao/               # Async DAO classes for database CRUD logic
+├─ model/             # Record-based immutable entities
+├─ service/           # Business logic and history management
 │
-├─ Main.java           # Application entry point
+├─ Main.java          # Application entry point
 │
 src/main/resources/com/idktogo/idk_to_go/
 │
-├─ *.fxml              # View files
-├─ styles/             # CSS stylesheets
-├─ images/             # UI assets and logos
-├─ db/app.db           # SQLite database
+├─ *.fxml             # View files
+├─ styles/            # CSS stylesheets
+├─ images/            # Logos and UI assets
+├─ db/schema.sql      # Database schema (MySQL)
+```
 
-## Database Schema (SQLite)
-Tables include:
-users
-restaurants
-menu
-userhistory
+---
 
-A full SQL schema is stored in:
-src/main/resources/com/idktogo/idk_to_go/db/schema.sql
+## Database Schema (MySQL)
+
+The application uses the following schema:
+
+| Table | Purpose |
+|--------|----------|
+| users | Stores user accounts and admin flag |
+| restaurants | Contains restaurant info, scores, and stats |
+| menu_items | Restaurant menus with item names and prices |
+| user_history | Tracks user interactions (likes/dislikes) |
+
+The full schema is located at:  
+`src/main/resources/com/idktogo/idk_to_go/db/schema.sql`
+
+---
 
 ## Build and Run
+
 ### Prerequisites
-- Java 21+
-- Maven 3.9+
-- Any IDE supporting JavaFX (IntelliJ recommended)
+- Java 21 or later  
+- Maven 3.9 or later  
+- Internet connection (for Railway MySQL access)  
+- IntelliJ IDEA (recommended)
 
 ### Run from IDE
-1. Open the project in IntelliJ
-2. Ensure Maven loads dependencies
-3. Run Main.java
+1. Open the project in IntelliJ.  
+2. Wait for Maven to import dependencies.  
+3. Run `Main.java`.  
+   You should see:  
+   ```
+   Connected to Railway MySQL successfully!
+   Application started successfully!
+   ```
 
-### Run from command line
+### Run from Command Line
+```
 mvn clean install
 mvn javafx:run
+```
 
-## Maven Configuration
-JavaFX modules are handled with org.openjfx plugin.
-Dependencies include SQLite JDBC and JavaFX controls.
+---
+
+## Maven Dependencies
+
+Key dependencies included in `pom.xml`:
+
+| Dependency | Purpose |
+|-------------|----------|
+| org.openjfx:javafx-controls | UI components |
+| org.openjfx:javafx-fxml | FXML loader support |
+| com.mysql:mysql-connector-j | MySQL JDBC driver |
+| com.zaxxer:HikariCP | Connection pooling |
+| org.slf4j:slf4j-simple | Logging |
+| org.junit.jupiter:junit-jupiter | Testing |
+
+---
 
 ## Git Workflow
-1. Fork or clone repository
-2. Create a feature branch
-3. Submit pull request to main
+
+1. Clone or fork the repository  
+2. Create a feature branch  
+3. Commit and push your changes  
+4. Submit a pull request to `main`
 
 Example:
+```
 git checkout -b feature/new-ui
 git commit -m "Added updated UI layout for main screen"
 git push origin feature/new-ui
+```
+
+---
 
 ## Contributing
-Contributions are NOT Welcome. This is a Team specific project for an Application Programming Course.
+
+Contributions are currently closed.  
+This project is part of an Application Programming course at the University of Texas at San Antonio.  
+External contributions require instructor or team approval.
+
+---
 
 ## License
-This repo currently has no assigned license. You may not redistribute or modify without permission unless a license is later added.
+
+No license currently assigned.  
+You may not redistribute or modify without explicit permission unless a license is added in the future.
+
+---
 
 ## Author / Maintainer
-BeamUTSA  
+
+**BeamUTSA**  
 University of Texas at San Antonio  
+Application Programming Project — IDK To Go  
+
+---
 
 ## Roadmap
-- Implement AI quiz generator
-- Add API support for live restaurant data
-- Replace local SQLite with remote database option
-- Package app into native installer formats (MSI/DMG)
+
+- Implement AI-based food quiz  
+- Add live analytics for admins  
+- Extend remote cloud database features  
+- Package application as a native installer (MSI/DMG/AppImage)

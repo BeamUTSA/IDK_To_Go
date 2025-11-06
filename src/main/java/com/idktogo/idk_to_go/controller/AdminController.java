@@ -4,14 +4,14 @@ import com.idktogo.idk_to_go.core.Navigation;
 import com.idktogo.idk_to_go.dao.HistoryDAO;
 import com.idktogo.idk_to_go.dao.RestaurantDAO;
 import com.idktogo.idk_to_go.model.Restaurant;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class AdminController {
 
@@ -26,30 +26,47 @@ public class AdminController {
         loadRestaurants();
     }
 
+    // === LOAD RESTAURANTS ===
     private void loadRestaurants() {
         restaurantList.getChildren().clear();
 
-        List<Restaurant> restaurants = RestaurantDAO.getAllRestaurantsSortedByName();
-        for (Restaurant r : restaurants) {
-            HBox row = new HBox(10);
-            row.setStyle("-fx-padding: 8; -fx-alignment: CENTER_LEFT;");
+        CompletableFuture<List<Restaurant>> future = RestaurantDAO.listAll();
 
-            Label nameLabel = new Label(r.name());
-            nameLabel.setStyle("-fx-font-size: 16;");
+        future.thenAccept(restaurants -> Platform.runLater(() -> {
+            restaurantList.getChildren().clear();
 
-            Button menuBtn = new Button("Menu");
-            Button editBtn = new Button("Edit");
-            Button deleteBtn = new Button("Delete");
+            if (restaurants.isEmpty()) {
+                restaurantList.getChildren().add(new Label("No restaurants found."));
+                return;
+            }
 
-            menuBtn.setOnAction(e -> manageMenu(r.id()));
-            editBtn.setOnAction(e -> editRestaurant(r.id()));
-            deleteBtn.setOnAction(e -> deleteRestaurant(r.id()));
+            for (Restaurant r : restaurants) {
+                HBox row = new HBox(10);
+                row.setStyle("-fx-padding: 8; -fx-alignment: CENTER_LEFT;");
 
-            row.getChildren().addAll(nameLabel, menuBtn, editBtn, deleteBtn);
-            restaurantList.getChildren().add(row);
-        }
+                Label nameLabel = new Label(r.name());
+                nameLabel.setStyle("-fx-font-size: 16;");
+
+                Button menuBtn = new Button("Menu");
+                Button editBtn = new Button("Edit");
+                Button deleteBtn = new Button("Delete");
+
+                menuBtn.setOnAction(e -> manageMenu(r.id()));
+                editBtn.setOnAction(e -> editRestaurant(r.id()));
+                deleteBtn.setOnAction(e -> deleteRestaurant(r.id()));
+
+                row.getChildren().addAll(nameLabel, menuBtn, editBtn, deleteBtn);
+                restaurantList.getChildren().add(row);
+            }
+
+        })).exceptionally(e -> {
+            e.printStackTrace();
+            Platform.runLater(() -> showAlert("Error loading restaurants", e.getMessage()));
+            return null;
+        });
     }
 
+    // === ADD NEW RESTAURANT ===
     @FXML
     private void addRestaurant() {
         String name = nameField.getText().trim();
@@ -58,22 +75,29 @@ public class AdminController {
         String logo = logoField.getText().trim();
 
         if (name.isBlank() || logo.isBlank()) {
-            System.out.println("Name and logo are required.");
+            showAlert("Invalid Input", "Name and logo are required.");
             return;
         }
 
         Restaurant newRestaurant = new Restaurant(
-                0, name, category, location,
-                0, 0, 0, 0, logo
+                0,
+                name,
+                category,
+                location,
+                0, 0, 0, 0,
+                logo
         );
 
-        if (RestaurantDAO.addRestaurant(newRestaurant)) {
-            System.out.println("Restaurant added successfully.");
-            clearFields();
-            loadRestaurants();
-        } else {
-            System.out.println("Failed to add restaurant.");
-        }
+        RestaurantDAO.create(newRestaurant)
+                .thenRun(() -> Platform.runLater(() -> {
+                    showAlert("Success", "Restaurant added successfully.");
+                    clearFields();
+                    loadRestaurants();
+                }))
+                .exceptionally(e -> {
+                    Platform.runLater(() -> showAlert("Error adding restaurant", e.getMessage()));
+                    return null;
+                });
     }
 
     private void clearFields() {
@@ -83,18 +107,21 @@ public class AdminController {
         logoField.clear();
     }
 
+    // === EDIT / DELETE / MENU MANAGEMENT ===
     private void editRestaurant(int restaurantId) {
-        System.out.println("Edit restaurant " + restaurantId + " ... (not yet implemented)");
-        // TODO: Build an Edit Restaurant screen and navigate there
+        showAlert("Info", "Edit restaurant " + restaurantId + " (not implemented yet).");
     }
 
     private void deleteRestaurant(int restaurantId) {
-        if (RestaurantDAO.deleteRestaurant(restaurantId)) {
-            System.out.println("Restaurant deleted");
-            loadRestaurants();
-        } else {
-            System.out.println("Delete failed");
-        }
+        RestaurantDAO.delete(restaurantId)
+                .thenRun(() -> Platform.runLater(() -> {
+                    showAlert("Deleted", "Restaurant deleted successfully.");
+                    loadRestaurants();
+                }))
+                .exceptionally(e -> {
+                    Platform.runLater(() -> showAlert("Error deleting restaurant", e.getMessage()));
+                    return null;
+                });
     }
 
     private void manageMenu(int restaurantId) {
@@ -105,21 +132,41 @@ public class AdminController {
         });
     }
 
+    // === ADMIN UTILITIES ===
     @FXML
     private void resetWeeklyStats() {
-        RestaurantDAO.resetWeeklyLikes();
-        System.out.println("Weekly likes reset");
-        loadRestaurants();
+        RestaurantDAO.resetWeeklyLikes()
+                .thenRun(() -> Platform.runLater(() -> {
+                    showAlert("Success", "Weekly likes reset.");
+                    loadRestaurants();
+                }))
+                .exceptionally(e -> {
+                    Platform.runLater(() -> showAlert("Error resetting stats", e.getMessage()));
+                    return null;
+                });
     }
 
     @FXML
     private void clearAllHistory() {
-        HistoryDAO.deleteHistoryForAllUsers();
-        System.out.println("All user history cleared");
+        HistoryDAO.deleteAllForAllUsers()
+                .thenRun(() -> Platform.runLater(() -> showAlert("Cleared", "All user history cleared.")))
+                .exceptionally(e -> {
+                    Platform.runLater(() -> showAlert("Error clearing history", e.getMessage()));
+                    return null;
+                });
     }
 
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/options.fxml");
+    }
+
+    // === ALERT HELPER ===
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

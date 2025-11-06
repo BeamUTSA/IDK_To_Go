@@ -8,8 +8,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
-import java.util.NavigableMap;
-
 public class AppearanceController {
 
     @FXML

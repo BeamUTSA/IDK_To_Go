@@ -1,5 +1,6 @@
 package com.idktogo.idk_to_go;
 
+import com.idktogo.idk_to_go.core.DatabaseConnector;
 import com.idktogo.idk_to_go.core.Navigation;
 import com.idktogo.idk_to_go.core.SessionManager;
 import com.idktogo.idk_to_go.core.ThemeManager;
@@ -13,15 +14,16 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            // Register the app stage globally
+            // Initialize MySQL connection via Railway
+            DatabaseConnector.getConnection();
+
+            // Setup app window
             Navigation.setStage(stage);
 
-            // Determine initial scene based on login status
             String fxmlPath = SessionManager.isLoggedIn()
                     ? "/com/idktogo/idk_to_go/main.fxml"
                     : "/com/idktogo/idk_to_go/login.fxml";
 
-            // Load the initial view (stage injection handled inside Navigation)
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Scene scene = new Scene(loader.load());
             ThemeManager.applyTheme(scene);
@@ -31,8 +33,10 @@ public class Main extends Application {
             stage.setTitle("IDK To-Go");
             stage.show();
 
+            System.out.println("Application started successfully!");
+
         } catch (Exception e) {
-            System.err.println("Error starting application: " + e.getMessage());
+            System.err.println("Startup error: " + e.getMessage());
             e.printStackTrace();
         }
     }

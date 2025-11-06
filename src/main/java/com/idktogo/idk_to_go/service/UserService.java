@@ -2,71 +2,65 @@ package com.idktogo.idk_to_go.service;
 
 import com.idktogo.idk_to_go.dao.UserDAO;
 import com.idktogo.idk_to_go.model.User;
-
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 public final class UserService {
-
     private UserService() {}
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
-    /** Fetch user profile as a model */
-    public static Optional<User> getUserById(int userId) {
-        return UserDAO.getUserById(userId);
+    public static CompletableFuture<Void> register(User user) {
+        if (user.username() == null || user.username().trim().isEmpty())
+            return CompletableFuture.failedFuture(new IllegalArgumentException("Username cannot be blank"));
+        if (user.email() == null || !EMAIL_PATTERN.matcher(user.email()).matches())
+            return CompletableFuture.failedFuture(new IllegalArgumentException("Invalid email format"));
+        if (user.password() == null || user.password().length() < 6)
+            return CompletableFuture.failedFuture(new IllegalArgumentException("Password must be at least 6 characters"));
+
+        return UserDAO.findByUsername(user.username()).thenCompose(opt -> {
+            if (opt.isPresent())
+                return CompletableFuture.failedFuture(new RuntimeException("Username already taken"));
+
+            return UserDAO.findByEmail(user.email()).thenCompose(emailOpt -> {
+                if (emailOpt.isPresent())
+                    return CompletableFuture.failedFuture(new RuntimeException("Email already registered"));
+
+                User newUser = new User(
+                        0,
+                        user.username(),
+                        user.email(),
+                        user.firstName(),
+                        user.lastName(),
+                        user.password(),
+                        false,
+                        Timestamp.from(Instant.now())
+                );
+                return UserDAO.create(newUser).thenApply(id -> null);
+            });
+        });
     }
 
-    /** Update user's email if new one is valid and not already taken */
-    public static boolean updateEmail(int userId, String newEmail) {
-        if (newEmail == null || !EMAIL_PATTERN.matcher(newEmail).matches()) {
-            System.err.println("Invalid email format");
-            return false;
-        }
-        if (UserDAO.isEmailTaken(newEmail)) {
-            System.err.println("Email is already registered");
-            return false;
-        }
-
-        return UserDAO.updateEmail(userId, newEmail);
+    public static CompletableFuture<User> getByCredentials(String username, String password) {
+        return UserDAO.findByCredentials(username, password)
+                .thenApply(opt -> opt.orElseThrow(() -> new RuntimeException("Invalid username or password")));
     }
 
-    /** Change password if old one matches and new one is valid */
-    public static boolean updatePassword(int userId, String oldPassword, String newPassword) {
-        Optional<User> userOpt = UserDAO.getUserByIdAndPassword(userId, oldPassword);
+    public static CompletableFuture<Boolean> update(User updatedUser) {
+        if (updatedUser.username() == null || updatedUser.username().trim().isEmpty())
+            return CompletableFuture.failedFuture(new IllegalArgumentException("Username cannot be blank"));
+        if (updatedUser.email() == null || !EMAIL_PATTERN.matcher(updatedUser.email()).matches())
+            return CompletableFuture.failedFuture(new IllegalArgumentException("Invalid email format"));
+        if (updatedUser.password() == null || updatedUser.password().length() < 6)
+            return CompletableFuture.failedFuture(new IllegalArgumentException("Password must be at least 6 characters"));
 
-        if (userOpt.isEmpty()) {
-            System.err.println("Current password is incorrect");
-            return false;
-        }
-        if (newPassword == null || newPassword.length() < 6) {
-            System.err.println("New password must be at least 6 characters");
-            return false;
-        }
-
-        return UserDAO.updatePassword(userId, newPassword);
+        return UserDAO.update(updatedUser);
     }
 
-    /** Update first and/or last name */
-    public static boolean updateName(int userId, String firstName, String lastName) {
-        return UserDAO.updateName(userId, firstName, lastName);
-    }
-
-    /** Update username if available */
-    public static boolean updateUsername(int userId, String newUsername) {
-        if (newUsername == null || newUsername.trim().isEmpty()) {
-            System.err.println("Username cannot be empty");
-            return false;
-        }
-        if (UserDAO.isUsernameTaken(newUsername)) {
-            System.err.println("Username is already in use");
-            return false;
-        }
-        return UserDAO.updateUsername(userId, newUsername);
-    }
-
-    /** Delete user and cascade delete their history and related data */
-    public static boolean deleteAccount(int userId) {
-        return UserDAO.deleteUser(userId);
+    public static CompletableFuture<Boolean> delete(int userId) {
+        return UserDAO.delete(userId);
     }
 }

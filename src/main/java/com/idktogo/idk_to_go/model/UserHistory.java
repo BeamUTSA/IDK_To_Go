@@ -6,6 +6,6 @@ public record UserHistory(
         int id,
         int userId,
         int restaurantId,
-        Integer liked,               // Integer instead of int for null safety
+        Integer liked,           // 1 = like, -1 = dislike, null = neutral
         LocalDateTime timestamp
 ) {}

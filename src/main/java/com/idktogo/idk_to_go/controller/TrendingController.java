@@ -3,13 +3,12 @@ package com.idktogo.idk_to_go.controller;
 import com.idktogo.idk_to_go.core.Navigation;
 import com.idktogo.idk_to_go.dao.RestaurantDAO;
 import com.idktogo.idk_to_go.model.Restaurant;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 public class TrendingController {
 
@@ -23,7 +22,7 @@ public class TrendingController {
         loadWeeklyTrending();
     }
 
-    // === Weekly Tab ===
+    // === Weekly Trending ===
     @FXML
     private void showWeekly() {
         highlightTab(weeklyButton);
@@ -32,11 +31,28 @@ public class TrendingController {
 
     private void loadWeeklyTrending() {
         trendingList.getChildren().clear();
-        List<Restaurant> trending = RestaurantDAO.getTopRestaurantsByWeeklyLikes();
-        trending.forEach(r -> trendingList.getChildren().add(createRestaurantRow(r)));
+
+        RestaurantDAO.topByWeeklyLikes(10)
+                .thenAccept(restaurants -> Platform.runLater(() -> {
+                    trendingList.getChildren().clear();
+
+                    if (restaurants.isEmpty()) {
+                        trendingList.getChildren().add(new Label("No trending restaurants this week."));
+                        return;
+                    }
+
+                    for (Restaurant r : restaurants) {
+                        trendingList.getChildren().add(createRestaurantRow(r));
+                    }
+                }))
+                .exceptionally(ex -> {
+                    Platform.runLater(() -> trendingList.getChildren().add(
+                            new Label("Error loading weekly trending: " + ex.getMessage())));
+                    return null;
+                });
     }
 
-    // === All-Time Tab ===
+    // === All-Time Trending ===
     @FXML
     private void showAllTime() {
         highlightTab(allTimeButton);
@@ -45,11 +61,28 @@ public class TrendingController {
 
     private void loadAllTimeTrending() {
         trendingList.getChildren().clear();
-        List<Restaurant> trending = RestaurantDAO.getTopRestaurantsByNetScore();
-        trending.forEach(r -> trendingList.getChildren().add(createRestaurantRow(r)));
+
+        RestaurantDAO.topByNetScore()
+                .thenAccept(restaurants -> Platform.runLater(() -> {
+                    trendingList.getChildren().clear();
+
+                    if (restaurants.isEmpty()) {
+                        trendingList.getChildren().add(new Label("No all-time trending restaurants found."));
+                        return;
+                    }
+
+                    for (Restaurant r : restaurants) {
+                        trendingList.getChildren().add(createRestaurantRow(r));
+                    }
+                }))
+                .exceptionally(ex -> {
+                    Platform.runLater(() -> trendingList.getChildren().add(
+                            new Label("Error loading all-time trending: " + ex.getMessage())));
+                    return null;
+                });
     }
 
-    // === Shared Helpers ===
+    // === Row Builder ===
     private HBox createRestaurantRow(Restaurant restaurant) {
         HBox row = new HBox(10);
         row.setStyle("""
@@ -69,6 +102,7 @@ public class TrendingController {
         return row;
     }
 
+    // === Navigation ===
     private void openRestaurantScene(int restaurantId) {
         Navigation.load("/com/idktogo/idk_to_go/restaurant.fxml", controller -> {
             if (controller instanceof RestaurantController rc) {

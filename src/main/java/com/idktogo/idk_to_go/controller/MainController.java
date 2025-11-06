@@ -1,11 +1,12 @@
 package com.idktogo.idk_to_go.controller;
 
 import com.idktogo.idk_to_go.core.Navigation;
+import com.idktogo.idk_to_go.core.SessionManager;
 import com.idktogo.idk_to_go.dao.RestaurantDAO;
-import com.idktogo.idk_to_go.dao.UserDAO;
 import com.idktogo.idk_to_go.model.Restaurant;
 import com.idktogo.idk_to_go.model.UserHistory;
-import com.idktogo.idk_to_go.service.UserHistoryService;
+import com.idktogo.idk_to_go.service.HistoryService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,8 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 
 public class MainController {
 
@@ -32,8 +33,7 @@ public class MainController {
     @FXML private ScrollPane historyScroll;
     @FXML private VBox historyBox;
 
-    private final UserHistoryService historyService = UserHistoryService.getInstance();
-    private final int userId = UserDAO.getLoggedInUserId();
+    private final HistoryService historyService = new HistoryService();
 
     @FXML
     private void initialize() {
@@ -41,11 +41,21 @@ public class MainController {
         loadHistoryList();
     }
 
+    // === LOAD HOT RESTAURANT ===
     private void loadHotRestaurant() {
-        RestaurantDAO.getTopRestaurantsByWeeklyLikes(1)
-                .stream()
-                .findFirst()
-                .ifPresentOrElse(this::displayHotRestaurant, () -> hotRestaurant.setText("No Hot Restaurant Yet"));
+        RestaurantDAO.topByWeeklyLikes(1)
+                .thenAccept(restaurants -> Platform.runLater(() -> {
+                    if (!restaurants.isEmpty()) {
+                        displayHotRestaurant(restaurants.getFirst());
+                    } else {
+                        hotRestaurant.setText("No Hot Restaurant Yet");
+                    }
+                }))
+                .exceptionally(ex -> {
+                    System.err.println("Error loading hot restaurant: " + ex.getMessage());
+                    Platform.runLater(() -> hotRestaurant.setText("Error loading hot restaurant"));
+                    return null;
+                });
     }
 
     private void displayHotRestaurant(Restaurant restaurant) {
@@ -54,7 +64,7 @@ public class MainController {
 
         if (logoPath != null && !logoPath.isBlank()) {
             if (!logoPath.startsWith("/")) logoPath = "/" + logoPath;
-            try (var imageStream = getClass().getResourceAsStream(logoPath)) {
+            try (InputStream imageStream = getClass().getResourceAsStream(logoPath)) {
                 if (imageStream != null) {
                     restaurantLogo.setImage(new Image(imageStream));
                 } else {
@@ -66,25 +76,52 @@ public class MainController {
         }
     }
 
+    // === LOAD USER HISTORY ===
     private void loadHistoryList() {
         historyBox.getChildren().clear();
-        List<UserHistory> history = historyService.getUserHistory(userId);
 
-        for (UserHistory entry : history) {
-            RestaurantDAO.getRestaurantById(entry.restaurantId())
-                    .ifPresent(restaurant -> {
-                        Button historyBtn = new Button(restaurant.name());
-                        historyBtn.getStyleClass().add("history-button");
-                        historyBtn.setOnAction(_ -> Navigation.load(
-                                "/com/idktogo/idk_to_go/restaurant.fxml",
-                                controller -> ((RestaurantController) controller).setRestaurantId(restaurant.id())
-                        ));
-                        historyBox.getChildren().add(historyBtn);
-                    });
+        Integer userId = SessionManager.getUserId();
+        if (userId == null) {
+            System.err.println("No user logged in.");
+            return;
         }
+
+        HistoryService.listByUser(userId)
+                .thenAccept(historyList -> Platform.runLater(() -> {
+                    historyBox.getChildren().clear();
+
+                    if (historyList.isEmpty()) {
+                        historyBox.getChildren().add(new Label("No history yet."));
+                        return;
+                    }
+
+                    for (UserHistory entry : historyList) {
+                        RestaurantDAO.findById(entry.restaurantId())
+                                .thenAccept(optRestaurant -> optRestaurant.ifPresent(restaurant ->
+                                        Platform.runLater(() -> {
+                                            Button historyBtn = new Button(restaurant.name());
+                                            historyBtn.getStyleClass().add("history-button");
+                                            historyBtn.setOnAction(e -> Navigation.load(
+                                                    "/com/idktogo/idk_to_go/restaurant.fxml",
+                                                    controller -> ((RestaurantController) controller)
+                                                            .setRestaurantId(restaurant.id())
+                                            ));
+                                            historyBox.getChildren().add(historyBtn);
+                                        })
+                                ))
+                                .exceptionally(ex -> {
+                                    System.err.println("Error loading restaurant from history: " + ex.getMessage());
+                                    return null;
+                                });
+                    }
+                }))
+                .exceptionally(ex -> {
+                    System.err.println("Error loading user history: " + ex.getMessage());
+                    return null;
+                });
     }
 
-
+    // === NAVIGATION BUTTONS ===
     @FXML
     private void openClosest() {
         Navigation.load("/com/idktogo/idk_to_go/closest.fxml");
@@ -107,16 +144,23 @@ public class MainController {
 
     @FXML
     private void openRestaurantScene() {
-        RestaurantDAO.getTopRestaurantsByWeeklyLikes(1).stream()
-                .findFirst()
-                .ifPresentOrElse(
-                        restaurant -> Navigation.load(
-                                "/com/idktogo/idk_to_go/restaurant.fxml",
-                                controller -> ((RestaurantController) controller).setRestaurantId(restaurant.id())
-                        ),
-                        () -> System.err.println("No hot restaurant found"));
+        RestaurantDAO.topByWeeklyLikes(1)
+                .thenAccept(restaurants -> Platform.runLater(() -> {
+                    if (!restaurants.isEmpty()) {
+                        Navigation.load("/com/idktogo/idk_to_go/restaurant.fxml",
+                                controller -> ((RestaurantController) controller)
+                                        .setRestaurantId(restaurants.getFirst().id()));
+                    } else {
+                        System.err.println("No hot restaurant found");
+                    }
+                }))
+                .exceptionally(ex -> {
+                    System.err.println("Error opening restaurant scene: " + ex.getMessage());
+                    return null;
+                });
     }
 
+    // === UTILITY ===
     private void openUrl(String url) {
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));

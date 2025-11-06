@@ -1,7 +1,9 @@
 package com.idktogo.idk_to_go.controller;
 
 import com.idktogo.idk_to_go.core.Navigation;
+import com.idktogo.idk_to_go.core.SessionManager;
 import com.idktogo.idk_to_go.dao.UserDAO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -11,12 +13,24 @@ public class OptionsController {
 
     @FXML
     private void initialize() {
-        // Only show admin button if user has admin role
-        adminButton.setVisible(UserDAO.isCurrentUserAdmin());
+        adminButton.setVisible(false); // Hide until user verified
+
+        Integer userId = SessionManager.getUserId();
+        if (userId != null) {
+            UserDAO.findById(userId).thenAccept(optionalUser -> {
+                optionalUser.ifPresent(user -> {
+                    boolean isAdmin = user.isAdmin();
+                    Platform.runLater(() -> adminButton.setVisible(isAdmin));
+                });
+            }).exceptionally(ex -> {
+                System.err.println("Failed to check admin status: " + ex.getMessage());
+                return null;
+            });
+        }
     }
 
     // ----------------------------------------
-    // Navigation methods
+    // Navigation
     // ----------------------------------------
 
     @FXML
@@ -46,7 +60,7 @@ public class OptionsController {
 
     @FXML
     private void logout() {
-        UserDAO.clearLoggedInUser(); // Clear session
-        Navigation.load("/com/idktogo/idk_to_go/login.fxml"); // Back to login
+        SessionManager.logout();
+        Navigation.load("/com/idktogo/idk_to_go/login.fxml");
     }
 }

@@ -1,12 +1,13 @@
 package com.idktogo.idk_to_go.controller;
 
 import com.idktogo.idk_to_go.core.Navigation;
+import com.idktogo.idk_to_go.core.SessionManager;
 import com.idktogo.idk_to_go.dao.MenuItemDAO;
 import com.idktogo.idk_to_go.dao.RestaurantDAO;
-import com.idktogo.idk_to_go.dao.UserDAO;
 import com.idktogo.idk_to_go.model.MenuItem;
 import com.idktogo.idk_to_go.model.Restaurant;
-import com.idktogo.idk_to_go.service.UserHistoryService;
+import com.idktogo.idk_to_go.service.RestaurantService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,9 +17,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.awt.Desktop;
+import java.io.InputStream;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 public class RestaurantController {
 
@@ -31,66 +31,119 @@ public class RestaurantController {
     private int restaurantId;
     private String mapsUrl;
 
-    private final UserHistoryService historyService = UserHistoryService.getInstance();
-    private final int userId = UserDAO.getLoggedInUserId();
-
+    // ✅ Called when restaurant is selected
     public void setRestaurantId(int id) {
         this.restaurantId = id;
         loadRestaurantDetails();
     }
 
+    // === LOAD RESTAURANT DETAILS ===
     private void loadRestaurantDetails() {
-        Optional<Restaurant> optionalRestaurant = RestaurantDAO.getRestaurantById(restaurantId);
+        RestaurantDAO.findById(restaurantId)
+                .thenAccept(optionalRestaurant -> Platform.runLater(() -> {
+                    if (optionalRestaurant.isEmpty()) {
+                        nameLabel.setText("Restaurant Not Found");
+                        return;
+                    }
 
-        if (optionalRestaurant.isEmpty()) {
-            nameLabel.setText("Restaurant Not Found");
-            return;
-        }
+                    Restaurant r = optionalRestaurant.get();
+                    nameLabel.setText(r.name());
+                    categoryLabel.setText("Category: " + r.category());
+                    mapsUrl = r.location();
+                    locationLabel.setText("Open in Maps");
 
-        Restaurant r = optionalRestaurant.get();
-        nameLabel.setText(r.name());
-        categoryLabel.setText("Category: " + r.category());
-        mapsUrl = r.location();
-        locationLabel.setText("Open in Maps");
+                    // Load logo from classpath
+                    if (r.logo() != null && !r.logo().isBlank()) {
+                        try {
+                            String logoPath = r.logo();
+                            if (!logoPath.startsWith("/")) logoPath = "/" + logoPath;
+                            try (InputStream stream = getClass().getResourceAsStream(logoPath)) {
+                                if (stream != null) {
+                                    logoImage.setImage(new Image(stream));
+                                } else {
+                                    System.err.println("Logo not found: " + logoPath);
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error loading logo: " + e.getMessage());
+                        }
+                    }
 
-        if (r.logo() != null && !r.logo().isBlank()) {
-            logoImage.setImage(new Image(r.logo(), true));
-        }
-
-        loadMenuItems();
+                    loadMenuItems();
+                }))
+                .exceptionally(ex -> {
+                    Platform.runLater(() ->
+                            nameLabel.setText("Error loading restaurant: " + ex.getMessage()));
+                    return null;
+                });
     }
 
+    // === LOAD MENU ITEMS ===
     private void loadMenuItems() {
         menuList.getChildren().clear();
-        List<MenuItem> items = MenuItemDAO.getMenuItemsByRestaurant(restaurantId);
 
-        if (items.isEmpty()) {
-            menuList.getChildren().add(new Label("No menu items available"));
+        MenuItemDAO.listByRestaurant(restaurantId)
+                .thenAccept(items -> Platform.runLater(() -> {
+                    menuList.getChildren().clear();
+
+                    if (items.isEmpty()) {
+                        menuList.getChildren().add(new Label("No menu items available"));
+                        return;
+                    }
+
+                    for (MenuItem item : items) {
+                        HBox row = new HBox(10);
+                        Label itemName = new Label(item.itemName());
+                        Label itemPrice = new Label(String.format("$%.2f", item.price()));
+
+                        itemName.setStyle("-fx-font-size: 14px;");
+                        itemPrice.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
+
+                        HBox.setHgrow(itemName, Priority.ALWAYS);
+                        row.getChildren().addAll(itemName, itemPrice);
+                        menuList.getChildren().add(row);
+                    }
+                }))
+                .exceptionally(ex -> {
+                    Platform.runLater(() -> menuList.getChildren().add(
+                            new Label("Error loading menu items: " + ex.getMessage())));
+                    return null;
+                });
+    }
+
+    // === USER ACTIONS ===
+    @FXML
+    private void likeRestaurant() {
+        Integer userId = SessionManager.getUserId();
+        if (userId == null) {
+            System.err.println("User not logged in — like ignored.");
             return;
         }
 
-        for (MenuItem item : items) {
-            HBox row = new HBox(10);
-            Label itemName = new Label(item.itemName());
-            Label itemPrice = new Label(String.format("$%.2f", item.price()));
-
-            itemName.setStyle("-fx-font-size: 14px;");
-            itemPrice.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
-
-            HBox.setHgrow(itemName, Priority.ALWAYS);
-            row.getChildren().addAll(itemName, itemPrice);
-            menuList.getChildren().add(row);
-        }
-    }
-
-    @FXML
-    private void likeRestaurant() {
-        historyService.recordAction(userId, restaurantId, true);
+        RestaurantService.handleLike(userId, restaurantId)
+                .thenRun(() -> Platform.runLater(() ->
+                        System.out.println("Restaurant liked successfully.")))
+                .exceptionally(ex -> {
+                    System.err.println("Error liking restaurant: " + ex.getMessage());
+                    return null;
+                });
     }
 
     @FXML
     private void dislikeRestaurant() {
-        historyService.recordAction(userId, restaurantId, false);
+        Integer userId = SessionManager.getUserId();
+        if (userId == null) {
+            System.err.println("User not logged in — dislike ignored.");
+            return;
+        }
+
+        RestaurantService.handleDislike(userId, restaurantId)
+                .thenRun(() -> Platform.runLater(() ->
+                        System.out.println("Restaurant disliked successfully.")))
+                .exceptionally(ex -> {
+                    System.err.println("Error disliking restaurant: " + ex.getMessage());
+                    return null;
+                });
     }
 
     @FXML

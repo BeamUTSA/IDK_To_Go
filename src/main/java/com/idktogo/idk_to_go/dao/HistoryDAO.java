@@ -1,147 +1,145 @@
 package com.idktogo.idk_to_go.dao;
 
-import com.idktogo.idk_to_go.data.SQLiteManager;
+import com.idktogo.idk_to_go.core.DatabaseConnector;
 import com.idktogo.idk_to_go.model.UserHistory;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
-public class HistoryDAO {
+/**
+ * HistoryDAO
+ * Manages user like/dislike interactions with restaurants asynchronously.
+ * Fully compatible with MySQL and Java record-based models.
+ */
+public final class HistoryDAO {
 
     private HistoryDAO() {}
 
-    /**
-     * Inserts or updates a like/dislike interaction.
-     * - If an existing record exists, update it.
-     * - Otherwise, create a new one.
-     */
-    public static boolean upsertInteraction(int userId, int restaurantId, Integer likedValue) {
-        final String sql = """
-            INSERT INTO user_history (user_id, restaurant_id, liked, timestamp)
-            VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-            ON CONFLICT(user_id, restaurant_id) DO UPDATE SET
-                liked = excluded.liked,
-                timestamp = CURRENT_TIMESTAMP
-        """;
+    // === CREATE / UPDATE (UPSERT) ===
+    public static CompletableFuture<Void> upsertInteraction(int userId, int restaurantId, Integer likedValue) {
+        return CompletableFuture.runAsync(() -> {
+            String sql = """
+                INSERT INTO user_history (user_id, restaurant_id, liked)
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE liked = VALUES(liked), ts = CURRENT_TIMESTAMP
+            """;
 
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, userId);
-            ps.setInt(2, restaurantId);
-            ps.setObject(3, likedValue);
+                ps.setInt(1, userId);
+                ps.setInt(2, restaurantId);
 
-            ps.executeUpdate();
-            return true;
+                if (likedValue == null) ps.setNull(3, Types.TINYINT);
+                else ps.setInt(3, likedValue);
 
-        } catch (SQLException e) {
-            System.err.println("HistoryDAO.upsertInteraction failed: " + e.getMessage());
-            return false;
-        }
+                ps.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to upsert user interaction: " + e.getMessage(), e);
+            }
+        });
     }
 
-    /**
-     * Helper to fetch current reaction for a (user, restaurant).
-     * Returns:
-     *   Optional.empty()  -> no row
-     *   Optional.of(null) -> row exists but 'liked' is NULL (neutral)
-     *   Optional.of(1)    -> liked
-     *   Optional.of(-1)   -> disliked
-     */
-    public static Optional<Integer> getInteractionType(int userId, int restaurantId) {
-        final String sql = "SELECT liked FROM user_history WHERE user_id = ? AND restaurant_id = ?";
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    // === READ ===
+    public static CompletableFuture<Optional<Integer>> getInteractionType(int userId, int restaurantId) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "SELECT liked FROM user_history WHERE user_id = ? AND restaurant_id = ?";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, userId);
-            ps.setInt(2, restaurantId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) return Optional.empty();
-                Integer liked = (Integer) rs.getObject("liked"); // May be null
-                return Optional.ofNullable(liked);
+                ps.setInt(1, userId);
+                ps.setInt(2, restaurantId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int liked = rs.getInt("liked");
+                        return rs.wasNull() ? Optional.empty() : Optional.of(liked);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to fetch interaction type: " + e.getMessage(), e);
             }
-
-        } catch (SQLException e) {
-            System.err.println("HistoryDAO.getInteractionType failed: " + e.getMessage());
             return Optional.empty();
-        }
+        });
     }
 
-    /**
-     * Retrieves all user history records for a given user.
-     */
-    public static List<UserHistory> getHistoryForUser(int userId) {
-        final String sql = """
-            SELECT * FROM user_history
-            WHERE user_id = ?
-            ORDER BY timestamp DESC
-        """;
+    public static CompletableFuture<List<UserHistory>> listByUser(int userId) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "SELECT * FROM user_history WHERE user_id = ? ORDER BY ts DESC";
+            List<UserHistory> list = new ArrayList<>();
 
-        List<UserHistory> historyList = new ArrayList<>();
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) list.add(mapRow(rs));
+                }
 
-            ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                historyList.add(mapRowToUserHistory(rs));
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to list user history: " + e.getMessage(), e);
             }
-
-        } catch (SQLException e) {
-            System.err.println("HistoryDAO.getHistoryForUser failed: " + e.getMessage());
-        }
-
-        return historyList;
+            return list;
+        });
     }
 
-    /**
-     * Deletes all history records for a specific user.
-     */
-    public static boolean deleteHistoryForUser(int userId) {
-        final String sql = "DELETE FROM user_history WHERE user_id = ?";
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    // === DELETE ===
+    public static CompletableFuture<Boolean> deleteInteraction(int userId, int restaurantId) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "DELETE FROM user_history WHERE user_id = ? AND restaurant_id = ?";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, userId);
-            return ps.executeUpdate() > 0;
+                ps.setInt(1, userId);
+                ps.setInt(2, restaurantId);
+                return ps.executeUpdate() > 0;
 
-        } catch (SQLException e) {
-            System.err.println("HistoryDAO.deleteHistoryForUser failed: " + e.getMessage());
-            return false;
-        }
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to delete user interaction: " + e.getMessage(), e);
+            }
+        });
     }
 
-    /**
-     * Deletes all user history records for all users.
-     */
-    public static boolean deleteHistoryForAllUsers() {
-        final String sql = "DELETE FROM user_history";
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    public static CompletableFuture<Integer> deleteAllForUser(int userId) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "DELETE FROM user_history WHERE user_id = ?";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.executeUpdate();
-            return true;
+                ps.setInt(1, userId);
+                return ps.executeUpdate();
 
-        } catch (SQLException e) {
-            System.err.println("HistoryDAO.deleteHistoryForAllUsers failed: " + e.getMessage());
-            return false;
-        }
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to delete all history for user: " + e.getMessage(), e);
+            }
+        });
     }
 
+    public static CompletableFuture<Void> deleteAllForAllUsers() {
+        return CompletableFuture.runAsync(() -> {
+            String sql = "DELETE FROM user_history";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to clear all user history: " + e.getMessage(), e);
+            }
+        });
+    }
 
-    // === Helper to map a row to UserHistory ===
-    private static UserHistory mapRowToUserHistory(ResultSet rs) throws SQLException {
+    // === Utility Mapper ===
+    private static UserHistory mapRow(ResultSet rs) throws SQLException {
+        Integer liked = rs.getInt("liked");
+        if (rs.wasNull()) liked = null;
+
         return new UserHistory(
                 rs.getInt("id"),
                 rs.getInt("user_id"),
                 rs.getInt("restaurant_id"),
-                rs.getObject("liked", Integer.class), // supports null
-                rs.getTimestamp("timestamp").toLocalDateTime()
+                liked,
+                rs.getTimestamp("ts").toLocalDateTime()
         );
     }
 }

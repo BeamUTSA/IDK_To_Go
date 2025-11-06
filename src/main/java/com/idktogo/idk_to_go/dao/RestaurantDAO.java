@@ -1,21 +1,174 @@
 package com.idktogo.idk_to_go.dao;
 
-import com.idktogo.idk_to_go.data.SQLiteManager;
+import com.idktogo.idk_to_go.core.DatabaseConnector;
 import com.idktogo.idk_to_go.model.Restaurant;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public final class RestaurantDAO {
 
     private RestaurantDAO() {}
 
-    // === CRUD (unchanged parts omitted for brevity)… ===
+    // === CREATE ===
+    public static CompletableFuture<Void> create(Restaurant r) {
+        return CompletableFuture.runAsync(() -> {
+            String sql = """
+                INSERT INTO restaurants (name, category, location, likes, dislikes, netScore, weeklyLikes, logo)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, r.name());
+                ps.setString(2, r.category());
+                ps.setString(3, r.location());
+                ps.setInt(4, r.likes());
+                ps.setInt(5, r.dislikes());
+                ps.setInt(6, r.netScore());
+                ps.setInt(7, r.weeklyLikes());
+                ps.setString(8, r.logo());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to create restaurant: " + e.getMessage(), e);
+            }
+        });
+    }
 
-    /** Helper method to map result row to Restaurant record */
-    private static Restaurant mapRowToRestaurant(ResultSet rs) throws SQLException {
+    // === READ ===
+    public static CompletableFuture<Optional<Restaurant>> findById(int id) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "SELECT * FROM restaurants WHERE id = ?";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) return Optional.of(mapRow(rs));
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to find restaurant: " + e.getMessage(), e);
+            }
+            return Optional.empty();
+        });
+    }
+
+    public static CompletableFuture<List<Restaurant>> listAll() {
+        return queryList("SELECT * FROM restaurants ORDER BY name ASC");
+    }
+
+    // === LEADERBOARD / TRENDING ===
+
+    public static CompletableFuture<List<Restaurant>> topByWeeklyLikes(int limit) {
+        int safeLimit = Math.max(1, Math.min(limit, 100));
+        String sql = """
+        SELECT id, name, category, location, likes, dislikes, netScore, weeklyLikes, logo
+        FROM restaurants
+        ORDER BY weeklyLikes DESC
+        LIMIT """ + " " + safeLimit;  // <-- add space before number
+
+        return CompletableFuture.supplyAsync(() -> {
+            List<Restaurant> list = new ArrayList<>();
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            } catch (SQLException e) {
+                throw new RuntimeException("Query failed in topByWeeklyLikes: " + e.getMessage(), e);
+            }
+            return list;
+        });
+    }
+
+
+    public static CompletableFuture<List<Restaurant>> topByNetScore() {
+        String sql = """
+        SELECT id, name, category, location, likes, dislikes, netScore, weeklyLikes, logo
+        FROM restaurants
+        ORDER BY netScore DESC
+        LIMIT 50
+    """;
+
+        return CompletableFuture.supplyAsync(() -> {
+            List<Restaurant> list = new ArrayList<>();
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            } catch (SQLException e) {
+                throw new RuntimeException("Query failed in topByNetScore: " + e.getMessage(), e);
+            }
+            return list;
+        });
+    }
+
+
+    // === UPDATE ===
+    public static CompletableFuture<Boolean> update(Restaurant r) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = """
+                UPDATE restaurants
+                SET name=?, category=?, location=?, logo=? WHERE id=?
+            """;
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, r.name());
+                ps.setString(2, r.category());
+                ps.setString(3, r.location());
+                ps.setString(4, r.logo());
+                ps.setInt(5, r.id());
+                return ps.executeUpdate() > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to update restaurant: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Void> delete(int id) {
+        return CompletableFuture.runAsync(() -> {
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement("DELETE FROM restaurants WHERE id=?")) {
+                ps.setInt(1, id);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to delete restaurant: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    // === SCORING ===
+    public static void incrementLikes(int id) { adjustField(id, "likes", 1); }
+    public static void decrementLikes(int id) { adjustField(id, "likes", -1); }
+    public static void incrementDislikes(int id) { adjustField(id, "dislikes", 1); }
+    public static void decrementDislikes(int id) { adjustField(id, "dislikes", -1); }
+
+    public static void adjustNetAndWeekly(int id, int delta) {
+        executeRaw("UPDATE restaurants SET netScore = netScore + ?, weeklyLikes = weeklyLikes + ? WHERE id = ?", ps -> {
+            ps.setInt(1, delta);
+            ps.setInt(2, delta);
+            ps.setInt(3, id);
+        });
+    }
+
+    public static CompletableFuture<Void> resetWeeklyLikes() {
+        return CompletableFuture.runAsync(() -> {
+            String sql = "UPDATE restaurants SET weeklyLikes = 0";
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to reset weekly likes: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    private static void adjustField(int id, String field, int delta) {
+        executeRaw("UPDATE restaurants SET " + field + " = GREATEST(" + field + " + ?, 0) WHERE id = ?", ps -> {
+            ps.setInt(1, delta);
+            ps.setInt(2, id);
+        });
+    }
+
+    // === Utility ===
+    static Restaurant mapRow(ResultSet rs) throws SQLException {
         return new Restaurant(
                 rs.getInt("id"),
                 rs.getString("name"),
@@ -23,218 +176,36 @@ public final class RestaurantDAO {
                 rs.getString("location"),
                 rs.getInt("likes"),
                 rs.getInt("dislikes"),
-                rs.getInt("net_score"),
-                rs.getInt("weekly_likes"),
+                rs.getInt("netScore"),
+                rs.getInt("weeklyLikes"),
                 rs.getString("logo")
         );
     }
 
-    public static boolean addRestaurant(Restaurant r) {
-        final String sql = """
-        INSERT INTO restaurants (name, category, location, likes, dislikes, net_score, weekly_likes, logo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """;
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, r.name());
-            ps.setString(2, r.category());
-            ps.setString(3, r.location());
-            ps.setInt(4, r.likes());
-            ps.setInt(5, r.dislikes());
-            ps.setInt(6, r.netScore());
-            ps.setInt(7, r.weeklyLikes());
-            ps.setString(8, r.logo());
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.addRestaurant failed: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public static boolean deleteRestaurant(int restaurantId) {
-        final String sql = "DELETE FROM restaurants WHERE id = ?";
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, restaurantId);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.deleteRestaurant failed: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /** Retrieves all restaurants sorted by name (case-insensitive) */
-    public static List<Restaurant> getAllRestaurantsSortedByName() {
-        final List<Restaurant> restaurants = new ArrayList<>();
-        final String sql = "SELECT * FROM restaurants ORDER BY LOWER(name) ASC";
-
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                restaurants.add(mapRowToRestaurant(rs));
+    private static CompletableFuture<List<Restaurant>> queryList(String sql) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Restaurant> list = new ArrayList<>();
+            try (Connection conn = DatabaseConnector.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            } catch (SQLException e) {
+                throw new RuntimeException("Query failed: " + e.getMessage(), e);
             }
-
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.getAllRestaurantsSortedByName failed: " + e.getMessage());
-        }
-
-        return restaurants;
+            return list;
+        });
     }
 
-    /** Retrieves a restaurant by ID */
-    public static Optional<Restaurant> getRestaurantById(int id) {
-        final String sql = "SELECT * FROM restaurants WHERE id = ?";
-
-        try (Connection conn = SQLiteManager.getConnection();
+    private static void executeRaw(String sql, ThrowingConsumer<PreparedStatement> binder) {
+        try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return Optional.of(mapRowToRestaurant(rs));
-            }
-
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.getRestaurantById failed: " + e.getMessage());
-        }
-
-        return Optional.empty();
-    }
-
-    // === SCORING OPERATIONS ===
-
-    public static void incrementLikes(int restaurantId) {
-        executeScoreUpdate("UPDATE restaurants SET likes = likes + 1 WHERE id = ?", restaurantId);
-    }
-
-    public static void decrementLikes(int restaurantId) {
-        // safe: do not drop below zero
-        executeScoreUpdate("""
-            UPDATE restaurants 
-            SET likes = CASE WHEN likes > 0 THEN likes - 1 ELSE 0 END 
-            WHERE id = ?
-        """, restaurantId);
-    }
-
-    public static void incrementDislikes(int restaurantId) {
-        executeScoreUpdate("UPDATE restaurants SET dislikes = dislikes + 1 WHERE id = ?", restaurantId);
-    }
-
-    public static void decrementDislikes(int restaurantId) {
-        // safe: do not drop below zero
-        executeScoreUpdate("""
-            UPDATE restaurants 
-            SET dislikes = CASE WHEN dislikes > 0 THEN dislikes - 1 ELSE 0 END 
-            WHERE id = ?
-        """, restaurantId);
-    }
-
-    /**
-     * Adjust net_score and weekly_likes together by a signed delta.
-     * Example: delta=+2 when switching from dislike -> like.
-     */
-    public static void adjustNetAndWeekly(int restaurantId, int delta) {
-        final String sql = "UPDATE restaurants SET net_score = net_score + ?, weekly_likes = weekly_likes + ? WHERE id = ?";
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, delta);
-            ps.setInt(2, delta);
-            ps.setInt(3, restaurantId);
+            binder.accept(ps);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("RestaurantDAO.adjustNetAndWeekly failed: " + e.getMessage());
+            throw new RuntimeException("SQL failed: " + e.getMessage(), e);
         }
     }
 
-    /** Helper method to run simple update queries */
-    private static void executeScoreUpdate(String sql, int restaurantId) {
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, restaurantId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.executeScoreUpdate failed: " + e.getMessage());
-        }
-    }
-
-    /** Retrieves all restaurants sorted by all-time net score (descending) */
-    public static List<Restaurant> getTopRestaurantsByNetScore() {
-        final List<Restaurant> restaurants = new ArrayList<>();
-        final String sql = "SELECT * FROM restaurants ORDER BY net_score DESC";
-
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                restaurants.add(mapRowToRestaurant(rs));
-            }
-
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.getTopRestaurantsByNetScore failed: " + e.getMessage());
-        }
-
-        return restaurants;
-    }
-
-    /** Returns the Restaurant with the highest weekly_likes */
-    public static List<Restaurant> getTopRestaurantsByWeeklyLikes(int limit) {
-        final List<Restaurant> restaurants = new ArrayList<>();
-        final String sql = "SELECT * FROM restaurants ORDER BY weekly_likes DESC LIMIT ?";
-
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, limit);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                restaurants.add(mapRowToRestaurant(rs));
-            }
-
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.getTopRestaurantsByWeeklyLikes failed: " + e.getMessage());
-        }
-
-        return restaurants;
-    }
-
-    /** Retrieves all restaurants sorted by weekly likes (descending) */
-    public static List<Restaurant> getTopRestaurantsByWeeklyLikes() {
-        final List<Restaurant> restaurants = new ArrayList<>();
-        final String sql = "SELECT * FROM restaurants ORDER BY weekly_likes DESC";
-
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                restaurants.add(mapRowToRestaurant(rs));
-            }
-
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.getTopRestaurantsByWeeklyLikes failed: " + e.getMessage());
-        }
-
-        return restaurants;
-    }
-
-    /** Reset weekly likes for all restaurants (to be run periodically) */
-    public static void resetWeeklyLikes() {
-        final String sql = "UPDATE restaurants SET weekly_likes = 0";
-        try (Connection conn = SQLiteManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("RestaurantDAO.resetWeeklyLikes failed: " + e.getMessage());
-        }
-    }
-
-    // Keep your existing list/get methods as-is.
-    // Note: SQLite generally allows `LIMIT ?`. If your driver balks, inline the int into SQL safely.
+    @FunctionalInterface
+    private interface ThrowingConsumer<T> { void accept(T t) throws SQLException; }
 }

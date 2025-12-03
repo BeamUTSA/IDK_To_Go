@@ -36,10 +36,19 @@ public class QuizController {
         try {
             this.client = OpenAIOkHttpClient.fromEnv();
         } catch (Exception e) {
-            quizStatusLabel.setText("Error: OpenAI API key not configured.");
-            System.err.println("Failed to initialize OpenAIClient. Make sure the OPENAI_API_KEY environment variable is set.");
+            System.err.println("Failed to initialize OpenAIClient: " + e.getMessage());
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Configuration Error");
+                alert.setHeaderText("OpenAI API Key Not Found");
+                alert.setContentText("The application could not initialize the AI service.\n\nPlease make sure you have set the 'OPENAI_API_KEY' environment variable in your run configuration and try again.");
+                alert.showAndWait();
+                quizStatusLabel.setText("Error: OpenAI API key not configured.");
+            });
         }
-        loadAllRestaurantsAndGenerateQuiz();
+        if (client != null) {
+            loadAllRestaurantsAndGenerateQuiz();
+        }
     }
 
     private void loadAllRestaurantsAndGenerateQuiz() {

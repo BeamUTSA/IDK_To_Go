@@ -10,7 +10,7 @@ public class QuizService {
 
     ResponseCreateParams params = ResponseCreateParams.builder()
             .input("What is the capital of France?")
-            .model("gpt-5-nano")
+            .model("gpt-5")
             .build();
 
     Response response = client.responses().create(params);

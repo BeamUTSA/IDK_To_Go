@@ -126,7 +126,7 @@ public class QuizController {
                         .model(ChatModel.GPT_4)
                         .addSystemMessage("You are a creative quiz generator. Output only valid JSON.")
                         .addUserMessage(prompt)
-                        .maxTokens(500L)
+                        .maxTokens(800L)
                         .temperature(0.9)
                         .build();
 
@@ -167,7 +167,7 @@ public class QuizController {
                 submitButton.setVisible(true);
                 submitButton.setDisable(false);
                 submitButton.setText("Find My Perfect Restaurant");
-                submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 15 30; -fx-background-radius: 10; -fx-cursor: hand;");
+                submitButton.setStyle("-fx-background-color: #0BBFFF; -fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 15 30; -fx-background-radius: 10; -fx-cursor: hand;");
                 quizStatusLabel.setText("Answer the questions and discover your match!");
 
             } catch (Exception e) {
@@ -263,11 +263,11 @@ public class QuizController {
             optionButton.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
                 if (isSelected) {
                     optionButton.setStyle(
-                            "-fx-background-color: #4CAF50;" +
+                            "-fx-background-color: #0BBFFF;" +
                                     "-fx-text-fill: white;" +
                                     "-fx-background-radius: 8;" +
                                     "-fx-padding: 12 20;" +
-                                    "-fx-border-color: #45a049;" +
+                                    "-fx-border-color: #0BCAEE;" +
                                     "-fx-border-radius: 8;" +
                                     "-fx-border-width: 2;" +
                                     "-fx-font-weight: bold;"
@@ -472,7 +472,7 @@ public class QuizController {
         // Restaurant name
         Label restaurantLabel = new Label(restaurant != null ? restaurant.name() : "Restaurant");
         restaurantLabel.setFont(Font.font("System", FontWeight.BOLD, 28));
-        restaurantLabel.setStyle("-fx-text-fill: #4CAF50;");
+        restaurantLabel.setStyle("-fx-text-fill: #0BBFFF;");
         restaurantLabel.setWrapText(true);
 
         // Category
@@ -516,7 +516,7 @@ public class QuizController {
         Button mapsButton = new Button("Open in Maps");
         mapsButton.setMaxWidth(Double.MAX_VALUE);
         mapsButton.setStyle(
-                "-fx-background-color: #4CAF50;" +
+                "-fx-background-color: #0BBFFF;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-size: 14;" +
                         "-fx-font-weight: bold;" +
@@ -525,7 +525,7 @@ public class QuizController {
                         "-fx-cursor: hand;"
         );
         mapsButton.setOnMouseEntered(e -> mapsButton.setStyle(
-                "-fx-background-color: #45a049;" +
+                "-fx-background-color: #0BCEFF;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-size: 14;" +
                         "-fx-font-weight: bold;" +
@@ -534,7 +534,7 @@ public class QuizController {
                         "-fx-cursor: hand;"
         ));
         mapsButton.setOnMouseExited(e -> mapsButton.setStyle(
-                "-fx-background-color: #4CAF50;" +
+                "-fx-background-color: #0CCEFF;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-size: 14;" +
                         "-fx-font-weight: bold;" +

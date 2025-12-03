@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="Quiz Debug added">
-      <change afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="I flipping works!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/QuizController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/QuizController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/OpenAiConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/OpenAiConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/QuizService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/QuizService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/quiz.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/quiz.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764788611679</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="I flipping works!">
+      <option name="closed" value="true" />
+      <created>1764790106410</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764790106410</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +210,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Quiz Communication + Generation support fixed." />
     <MESSAGE value="Quiz Debug added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Quiz Debug added" />
+    <MESSAGE value="I flipping works!" />
+    <option name="LAST_COMMIT_MESSAGE" value="I flipping works!" />
   </component>
 </project>

@@ -4,17 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="I flipping works!">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin_menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/closest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/closest.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-dark.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-dark.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-light.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-light.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/trending.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/trending.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tree.txt" beforeDir="false" />
+    <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="Project Finalization.">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AppearanceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AppearanceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/OptionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/OptionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/QuizController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/QuizController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RegisterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RegisterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RestaurantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RestaurantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/TrendingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/TrendingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/DatabaseConnector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/Navigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/Navigation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/OpenAiConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/OpenAiConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/SessionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/ThemeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/ThemeManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/HistoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/HistoryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/MenuItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/MenuItemDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/RestaurantDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/RestaurantDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/data/AppStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/data/AppStorage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/Restaurant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/state/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/state/AppState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +236,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764792083445</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Project Finalization.">
+      <option name="closed" value="true" />
+      <created>1764818787444</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764818787444</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,6 +257,7 @@
     <MESSAGE value="Quiz Communication + Generation support fixed." />
     <MESSAGE value="Quiz Debug added" />
     <MESSAGE value="I flipping works!" />
-    <option name="LAST_COMMIT_MESSAGE" value="I flipping works!" />
+    <MESSAGE value="Project Finalization." />
+    <option name="LAST_COMMIT_MESSAGE" value="Project Finalization." />
   </component>
 </project>

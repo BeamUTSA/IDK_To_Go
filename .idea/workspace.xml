@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="I flipping works!">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/QuizController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/QuizController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin_menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/closest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/closest.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-dark.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-dark.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-light.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-light.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/trending.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/trending.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tree.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +30,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -70,6 +80,7 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Application.Main.executor": "Run",
+    "Maven.IDK-To-Go [org.apache.maven.plugins:maven-jar-plugin:3.4.1:jar].executor": "Run",
     "Maven.IDK-To-Go.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -84,7 +95,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "inlay.hints",
@@ -204,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764791621888</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="I flipping works!">
+      <option name="closed" value="true" />
+      <created>1764792083445</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764792083445</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -6,30 +6,47 @@
 <?import java.net.URL?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="httpfx.com/fxml/1"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.idktogo.idk_to_go.controller.TrendingController"
             prefWidth="400" prefHeight="750"
             styleClass="root-pane">
 
-    <!-- Top: Back button + Title -->
+    <!-- Top: Back button + Title with gradient header -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="toolbar">
-            <Button text="← Back" onAction="#goBack" />
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="gradient-header">
+            <Button text="← Back"
+                    onAction="#goBack"
+                    styleClass="icon-button" />
             <Label text="Trending" styleClass="title-label" />
+            <Region HBox.hgrow="ALWAYS" />
         </HBox>
     </top>
 
-    <!-- Subtabs for Weekly / All Time -->
+    <!-- Center: Tabs + Scrollable Trending List -->
     <center>
-        <VBox spacing="12">
-            <HBox spacing="8" alignment="CENTER" style="-fx-padding: 10;">
-                <Button fx:id="weeklyButton" text="This Week" onAction="#showWeekly" styleClass="tab-button tab-weekly" />
-                <Button fx:id="allTimeButton" text="All Time" onAction="#showAllTime" styleClass="tab-button tab-alltime" />
+        <!-- White card-style background & padding for trending area -->
+        <VBox spacing="16" styleClass="trending-pane padded-box">
+
+            <!-- Time-range tabs -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Button fx:id="weeklyButton"
+                        text="This Week"
+                        onAction="#showWeekly"
+                        styleClass="tab-button tab-weekly" />
+                <Button fx:id="allTimeButton"
+                        text="All Time"
+                        onAction="#showAllTime"
+                        styleClass="tab-button tab-alltime" />
             </HBox>
 
             <!-- Scrollable Trending List -->
-            <ScrollPane fx:id="trendingScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane">
-                <VBox fx:id="trendingList" spacing="10" style="-fx-padding: 10;" />
+            <ScrollPane fx:id="trendingScrollPane"
+                        fitToWidth="true"
+                        VBox.vgrow="ALWAYS"
+                        styleClass="scroll-pane">
+                <VBox fx:id="trendingList"
+                      spacing="10"
+                      style="-fx-padding: 10 0 20 0;" />
             </ScrollPane>
         </VBox>
     </center>

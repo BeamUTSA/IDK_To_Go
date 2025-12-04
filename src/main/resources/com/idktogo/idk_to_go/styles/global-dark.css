@@ -1,92 +1,136 @@
 /**************************************************************
- * DARK THEME — Discord-style palette with accent #1e90FF
+ * DARK THEME – Sleek Discord-style with vibrant accents
  **************************************************************/
 
-/* language=CSS */
-
 .root, .root-pane {
-    -color-bg:            #2b2d31;         /* main background */
-    -color-text:          #ffffff;         /* primary text */
-    -color-muted:         #b5bac1;         /* secondary text */
-    -color-accent:        #1e90FF;         /* new accent per your choice */
+    -color-bg:            #2b2d31;
+    -color-text:          #f2f3f5;
+    -color-muted:         #b5bac1;
+    -color-accent:        #5865f2;
     -color-on-accent:     #ffffff;
-    -color-card-bg:       #313338;         /* card/panel bg */
-    -color-border:        rgba(255,255,255,0.07);
-    -color-toolbar:       #1e1f22;         /* header */
-    -color-link:          #64b5f6;
+    -color-card-bg:       #313338;
+    -color-border:        rgba(255,255,255,0.08);
+    -color-toolbar:       #1e1f22;
+    -color-link:          #00b0f4;
 
-    -color-like:          #335533;
-    -color-dislike:       #663333;
+    -color-like:          #2d4a2d;
+    -color-dislike:       #5c2626;
+    -color-danger:        #ed4245;
 
-    -color-hover:         rgba(255,255,255,0.08);
-    -color-hover-strong:  rgba(255,255,255,0.12);
-    -color-selection:     #005a99;         /* focused list item */
+    -color-hover:         rgba(255,255,255,0.06);
+    -color-hover-strong:  rgba(255,255,255,0.10);
+    -color-selection:     #4752c4;
     -color-on-selection:  #ffffff;
 
-    -color-tab:           #1e1f22;         /* unselected tab bg */
-    -color-tab-hover:     #3a3c43;
-
+    -color-tab:           #2b2d31;
+    -color-tab-hover:     #35373c;
     -color-trending-bg:   #2b2d31;
 }
 
-/* Dark-mode readability across key labels */
+/* Dark mode text colors */
 .card-title,
 .section-title,
-.title-label {
+.title-label,
+.restaurant-name,
+.menu-item-name {
     -fx-text-fill: -color-text;
 }
+
 .card-subtitle,
 .subtitle-label,
-.trending-score {
+.trending-score,
+.restaurant-info {
     -fx-text-fill: -color-muted;
 }
 
-/* Toolbar/Homebar refined */
+/* Toolbar styling */
 .toolbar, .homebar {
     -fx-background-color: -color-toolbar;
     -fx-border-color: -color-border;
     -fx-border-width: 0 0 1 0;
 }
 
-/* Trending specifics */
+/* Trending pane */
 .trending-pane .scroll-pane {
     -fx-background-color: -color-trending-bg;
     -fx-border-color: -color-border;
 }
 
-/* Tabs: selected gets accent, hover softens */
+/* Tab styling for dark */
 .tab-button {
     -fx-background-color: -color-tab;
     -fx-text-fill: -color-text;
 }
+
 .tab-button:hover {
     -fx-background-color: -color-tab-hover;
 }
-.tab-button:selected,
-.tab-button:focused {
-    -fx-background-color: -color-accent;
-    -fx-text-fill: -color-on-accent;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0.3, 0, 2);
-}
 
-/* History buttons: strong focus for dark backgrounds */
+/* History buttons in dark mode */
 .history-button {
     -fx-text-fill: -color-text;
-}
-.history-button:focused,
-.history-button:armed,
-.history-button:selected {
-    -fx-background-color: -color-selection;
-    -fx-text-fill: -color-on-selection;
+    -fx-background-color: rgba(255,255,255,0.03);
 }
 
-/* Card button (Hot RN): subtle, not blue-filled */
-.card-button:hover {
+.history-button:hover {
     -fx-background-color: -color-hover;
 }
-.card-button:focused,
-.card-button:armed,
-.card-button:selected {
-    -fx-background-color: -color-hover-strong;
+
+/* Card button with subtle glow */
+.card-button {
+    -fx-background-color: rgba(255,255,255,0.02);
+}
+
+.card-button:hover {
+    -fx-background-color: -color-hover;
+    -fx-border-color: rgba(88,101,242,0.3);
+    -fx-border-width: 1;
+}
+
+/* Restaurant and menu cards */
+.restaurant-card,
+.menu-item-card {
+    -fx-background-color: -color-card-bg;
+    -fx-border-color: rgba(255,255,255,0.05);
+    -fx-border-width: 1;
+}
+
+.restaurant-card:hover,
+.menu-item-card:hover {
+    -fx-border-color: rgba(88,101,242,0.3);
+}
+
+/* Text fields in dark */
+.text-field {
+    -fx-background-color: rgba(0,0,0,0.2);
+    -fx-text-fill: -color-text;
+    -fx-border-color: rgba(255,255,255,0.1);
+}
+
+.text-field:focus {
+    -fx-border-color: -color-accent;
+    -fx-background-color: rgba(0,0,0,0.3);
+}
+
+/* Scrollbar for dark */
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(88,101,242,0.4);
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(88,101,242,0.6);
+}
+
+/* Icon buttons on dark toolbar */
+.icon-button:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+/* Danger button for dark */
+.danger-button {
+    -fx-background-color: -color-danger;
+}
+
+.danger-button:hover {
+    -fx-background-color: #da373c;
 }

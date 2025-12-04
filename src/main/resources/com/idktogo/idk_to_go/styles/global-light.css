@@ -1,40 +1,73 @@
 /**************************************************************
- * LIGHT THEME — sets looked-up colors for a bright UI
+ * LIGHT THEME – Bright, clean, and modern
  **************************************************************/
 
 .root, .root-pane {
-    -color-bg:            #f7f7f7;
-    -color-text:          #222222;
-    -color-muted:         #555555;
+    -color-bg:            #f8f9fa;
+    -color-text:          #1a1a1a;
+    -color-muted:         #6c757d;
     -color-accent:        #00BFFF;
     -color-on-accent:     #ffffff;
     -color-card-bg:       #ffffff;
-    -color-border:        #dddddd;
+    -color-border:        #dee2e6;
     -color-toolbar:       #00BFFF;
-    -color-link:          #1565c0;
+    -color-link:          #0066cc;
 
-    -color-like:          #e8f5e9;
-    -color-dislike:       #ffebee;
+    -color-like:          #d4edda;
+    -color-dislike:       #f8d7da;
+    -color-danger:        #dc3545;
 
-    -color-hover:         rgba(0,0,0,0.05);
+    -color-hover:         rgba(0,0,0,0.04);
     -color-hover-strong:  rgba(0,0,0,0.08);
-    -color-selection:     #d7ecff;
-    -color-on-selection:  #003366;
+    -color-selection:     #cce5ff;
+    -color-on-selection:  #004085;
 
-    -color-tab:           #e9eef3;
-    -color-tab-hover:     #dee8f0;
-
+    -color-tab:           #e9ecef;
+    -color-tab-hover:     #dee2e6;
     -color-trending-bg:   #ffffff;
 }
 
-/* Ensure key headings read correctly in light mode */
+/* Ensure text is readable in light mode */
 .card-title,
 .section-title,
+.title-label,
 #historyLabel {
     -fx-text-fill: -color-text;
 }
+
 .card-subtitle,
 .history-button,
-.subtitle-label {
+.subtitle-label,
+.restaurant-info,
+.menu-item-name {
     -fx-text-fill: -color-muted;
+}
+
+/* Light theme scrollbar */
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(0, 191, 255, 0.3);
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(0, 191, 255, 0.6);
+}
+
+/* Cards with subtle borders */
+.restaurant-card,
+.menu-item-card,
+.card-button {
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+}
+
+/* Toolbar text for light theme */
+.toolbar .title-label,
+.toolbar .button,
+.homebar .title-label {
+    -fx-text-fill: white;
+}
+
+.toolbar .icon-button,
+.homebar .icon-button {
+    -fx-text-fill: white;
 }

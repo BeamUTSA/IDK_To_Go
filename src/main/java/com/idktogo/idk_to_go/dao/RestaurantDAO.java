@@ -11,7 +11,7 @@ public final class RestaurantDAO {
 
     private RestaurantDAO() {}
 
-    // === CREATE ===
+    // Create a new restaurant
     public static CompletableFuture<Void> create(Restaurant r) {
         return CompletableFuture.runAsync(() -> {
             String sql = """
@@ -35,7 +35,7 @@ public final class RestaurantDAO {
         });
     }
 
-    // === READ ===
+    // Find a restaurant by ID
     public static CompletableFuture<Optional<Restaurant>> findById(int id) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = "SELECT * FROM restaurants WHERE id = ?";
@@ -51,19 +51,19 @@ public final class RestaurantDAO {
         });
     }
 
+    // List all restaurants
     public static CompletableFuture<List<Restaurant>> listAll() {
         return queryList("SELECT * FROM restaurants ORDER BY name ASC");
     }
 
-    // === LEADERBOARD / TRENDING ===
-
+    // Get top restaurants by weekly likes
     public static CompletableFuture<List<Restaurant>> topByWeeklyLikes(int limit) {
         int safeLimit = Math.max(1, Math.min(limit, 100));
         String sql = """
         SELECT id, name, category, location, likes, dislikes, netScore, weeklyLikes, logo
         FROM restaurants
         ORDER BY weeklyLikes DESC
-        LIMIT """ + " " + safeLimit;  // <-- add space before number
+        LIMIT """ + " " + safeLimit;
 
         return CompletableFuture.supplyAsync(() -> {
             List<Restaurant> list = new ArrayList<>();
@@ -78,7 +78,7 @@ public final class RestaurantDAO {
         });
     }
 
-
+    // Get top restaurants by net score
     public static CompletableFuture<List<Restaurant>> topByNetScore() {
         String sql = """
         SELECT id, name, category, location, likes, dislikes, netScore, weeklyLikes, logo
@@ -100,8 +100,7 @@ public final class RestaurantDAO {
         });
     }
 
-
-    // === UPDATE ===
+    // Update an existing restaurant
     public static CompletableFuture<Boolean> update(Restaurant r) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = """
@@ -122,6 +121,7 @@ public final class RestaurantDAO {
         });
     }
 
+    // Delete a restaurant by ID
     public static CompletableFuture<Void> delete(int id) {
         return CompletableFuture.runAsync(() -> {
             try (Connection conn = DatabaseConnector.getConnection();
@@ -134,12 +134,16 @@ public final class RestaurantDAO {
         });
     }
 
-    // === SCORING ===
+    // Increment restaurant likes
     public static void incrementLikes(int id) { adjustField(id, "likes", 1); }
+    // Decrement restaurant likes
     public static void decrementLikes(int id) { adjustField(id, "likes", -1); }
+    // Increment restaurant dislikes
     public static void incrementDislikes(int id) { adjustField(id, "dislikes", 1); }
+    // Decrement restaurant dislikes
     public static void decrementDislikes(int id) { adjustField(id, "dislikes", -1); }
 
+    // Adjust net score and weekly likes
     public static void adjustNetAndWeekly(int id, int delta) {
         executeRaw("UPDATE restaurants SET netScore = netScore + ?, weeklyLikes = weeklyLikes + ? WHERE id = ?", ps -> {
             ps.setInt(1, delta);
@@ -148,6 +152,7 @@ public final class RestaurantDAO {
         });
     }
 
+    // Reset all weekly likes to zero
     public static CompletableFuture<Void> resetWeeklyLikes() {
         return CompletableFuture.runAsync(() -> {
             String sql = "UPDATE restaurants SET weeklyLikes = 0";
@@ -160,6 +165,7 @@ public final class RestaurantDAO {
         });
     }
 
+    // Adjust a specific field (likes/dislikes)
     private static void adjustField(int id, String field, int delta) {
         executeRaw("UPDATE restaurants SET " + field + " = GREATEST(" + field + " + ?, 0) WHERE id = ?", ps -> {
             ps.setInt(1, delta);
@@ -167,7 +173,7 @@ public final class RestaurantDAO {
         });
     }
 
-    // === Utility ===
+    // Map a ResultSet row to a Restaurant object
     static Restaurant mapRow(ResultSet rs) throws SQLException {
         return new Restaurant(
                 rs.getInt("id"),
@@ -182,6 +188,7 @@ public final class RestaurantDAO {
         );
     }
 
+    // Execute a query that returns a list of restaurants
     private static CompletableFuture<List<Restaurant>> queryList(String sql) {
         return CompletableFuture.supplyAsync(() -> {
             List<Restaurant> list = new ArrayList<>();
@@ -196,6 +203,7 @@ public final class RestaurantDAO {
         });
     }
 
+    // Execute a raw SQL update statement
     private static void executeRaw(String sql, ThrowingConsumer<PreparedStatement> binder) {
         try (Connection conn = DatabaseConnector.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

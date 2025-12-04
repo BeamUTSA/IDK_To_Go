@@ -19,12 +19,11 @@ public class AppearanceController {
     private Stage stage;
 
     public void initialize() {
-        // Assign ToggleGroup programmatically
         ToggleGroup toggleGroup = new ToggleGroup();
         lightModeToggle.setToggleGroup(toggleGroup);
         darkModeToggle.setToggleGroup(toggleGroup);
 
-        // Reflect current active theme on UI
+        // Set the correct toggle button based on the active theme
         if (ThemeManager.getActiveTheme() == ThemeManager.Theme.DARK) {
             darkModeToggle.setSelected(true);
         } else {
@@ -36,26 +35,29 @@ public class AppearanceController {
         this.stage = stage;
     }
 
+    // Switch to light mode
     @FXML
     private void switchToLightMode() {
         applyTheme(ThemeManager.Theme.LIGHT);
     }
 
+    // Switch to dark mode
     @FXML
     private void switchToDarkMode() {
         applyTheme(ThemeManager.Theme.DARK);
     }
 
+    // Apply the selected theme to the scene
     private void applyTheme(ThemeManager.Theme theme) {
         ThemeManager.setActiveTheme(theme);
 
-        // Fetch Scene from any visible UI component
         Scene scene = lightModeToggle.getScene();
         if (scene != null) {
             ThemeManager.applyTheme(scene);
         }
     }
 
+    // Navigate back to the options scene
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/options.fxml");

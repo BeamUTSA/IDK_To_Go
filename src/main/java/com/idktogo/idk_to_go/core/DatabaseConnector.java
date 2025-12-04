@@ -12,8 +12,8 @@ public final class DatabaseConnector {
 
     private DatabaseConnector() {}
 
+    // Establishes a new database connection
     public static Connection getConnection() throws SQLException {
-        // Always open a new connection (auto-managed by try-with-resources)
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }

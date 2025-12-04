@@ -11,6 +11,7 @@ public final class MenuItemDAO {
 
     private MenuItemDAO() {}
 
+    // Create a new menu item
     public static CompletableFuture<Void> create(MenuItem item) {
         return CompletableFuture.runAsync(() -> {
             String sql = "INSERT INTO menu_items (restaurant_id, item_name, price) VALUES (?, ?, ?)";
@@ -26,6 +27,7 @@ public final class MenuItemDAO {
         });
     }
 
+    // List all menu items for a given restaurant
     public static CompletableFuture<List<MenuItem>> listByRestaurant(int restaurantId) {
         return CompletableFuture.supplyAsync(() -> {
             List<MenuItem> list = new ArrayList<>();
@@ -43,6 +45,7 @@ public final class MenuItemDAO {
         });
     }
 
+    // Update an existing menu item
     public static CompletableFuture<Boolean> update(MenuItem item) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = "UPDATE menu_items SET item_name = ?, price = ? WHERE id = ?";
@@ -58,6 +61,7 @@ public final class MenuItemDAO {
         });
     }
 
+    // Delete a menu item by ID
     public static CompletableFuture<Boolean> delete(int id) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = "DELETE FROM menu_items WHERE id = ?";
@@ -71,6 +75,7 @@ public final class MenuItemDAO {
         });
     }
 
+    // Map a ResultSet row to a MenuItem object
     private static MenuItem mapRow(ResultSet rs) throws SQLException {
         return new MenuItem(
                 rs.getInt("id"),

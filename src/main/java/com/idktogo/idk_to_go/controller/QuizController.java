@@ -26,10 +26,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-/**
- * Enhanced QuizController with button-based UI and overlay popup.
- * Uses StackPane root for overlay functionality.
- */
 public class QuizController {
 
     @FXML private StackPane rootStackPane;
@@ -191,9 +187,7 @@ public class QuizController {
         });
     }
 
-    /**
-     * Creates a stylish question card with button options
-     */
+    // Creates a question card with button options
     private VBox createQuestionCard(int number, String question, JSONArray options) {
         VBox card = new VBox(12);
         card.setStyle(
@@ -203,13 +197,11 @@ public class QuizController {
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
         );
 
-        // Question label
         Label questionLabel = new Label(number + ". " + question);
         questionLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
         questionLabel.setWrapText(true);
         questionLabel.setStyle("-fx-text-fill: #2c3e50;");
 
-        // Button group for options
         ToggleGroup toggleGroup = new ToggleGroup();
         VBox optionsBox = new VBox(8);
 
@@ -404,7 +396,7 @@ public class QuizController {
                 quizStatusLabel.setText("Found your perfect match!");
                 submitButton.setDisable(false);
 
-                // Show overlay popup
+                // Show the recommendation overlay
                 showRecommendationOverlay(restaurant, reason, alternatives);
 
             } catch (Exception e) {
@@ -425,14 +417,11 @@ public class QuizController {
         });
     }
 
-    /**
-     * Shows an overlay popup with the restaurant recommendation
-     */
+    // Displays an overlay with the restaurant recommendation
     private void showRecommendationOverlay(Restaurant restaurant, String reason, JSONArray alternatives) {
-        // Clear previous content
         recommendationCard.getChildren().clear();
 
-        // Close button in top-right corner
+        // Close button
         Button closeButton = new Button("X");
         closeButton.setStyle(
                 "-fx-background-color: transparent;" +
@@ -464,27 +453,22 @@ public class QuizController {
         HBox closeBox = new HBox(closeButton);
         closeBox.setAlignment(Pos.TOP_RIGHT);
 
-        // Title
         Label titleLabel = new Label("Your Perfect Match!");
         titleLabel.setFont(Font.font("System", FontWeight.BOLD, 22));
         titleLabel.setStyle("-fx-text-fill: #2c3e50;");
 
-        // Restaurant name
         Label restaurantLabel = new Label(restaurant != null ? restaurant.name() : "Restaurant");
         restaurantLabel.setFont(Font.font("System", FontWeight.BOLD, 28));
         restaurantLabel.setStyle("-fx-text-fill: #0BBFFF;");
         restaurantLabel.setWrapText(true);
 
-        // Category
         Label categoryLabel = new Label(restaurant != null ? "Category: " + restaurant.category() : "");
         categoryLabel.setFont(Font.font("System", 14));
         categoryLabel.setStyle("-fx-text-fill: #7f8c8d;");
 
-        // Separator
         Separator separator1 = new Separator();
         separator1.setPadding(new Insets(10, 0, 10, 0));
 
-        // Reason section
         Label reasonTitle = new Label("Why this matches you:");
         reasonTitle.setFont(Font.font("System", FontWeight.BOLD, 14));
         reasonTitle.setStyle("-fx-text-fill: #34495e;");
@@ -494,7 +478,6 @@ public class QuizController {
         reasonText.setWrapText(true);
         reasonText.setStyle("-fx-text-fill: #555;");
 
-        // Alternatives section
         Label altTitle = new Label("Other great options:");
         altTitle.setFont(Font.font("System", FontWeight.BOLD, 14));
         altTitle.setStyle("-fx-text-fill: #34495e;");
@@ -508,11 +491,9 @@ public class QuizController {
             altBox.getChildren().add(altLabel);
         }
 
-        // Separator
         Separator separator2 = new Separator();
         separator2.setPadding(new Insets(10, 0, 10, 0));
 
-        // Open in Maps button
         Button mapsButton = new Button("Open in Maps");
         mapsButton.setMaxWidth(Double.MAX_VALUE);
         mapsButton.setStyle(
@@ -544,7 +525,6 @@ public class QuizController {
         ));
         mapsButton.setOnAction(e -> openInMaps(restaurant));
 
-        // Retake Quiz button
         Button retakeButton = new Button("Retake Quiz");
         retakeButton.setMaxWidth(Double.MAX_VALUE);
         retakeButton.setStyle(
@@ -585,11 +565,9 @@ public class QuizController {
             generateQuiz();
         });
 
-        // Button container
         VBox buttonBox = new VBox(10);
         buttonBox.getChildren().addAll(mapsButton, retakeButton);
 
-        // Add all elements to the card
         recommendationCard.getChildren().addAll(
                 closeBox,
                 titleLabel,
@@ -604,13 +582,10 @@ public class QuizController {
                 buttonBox
         );
 
-        // Show the overlay
         overlayPane.setVisible(true);
     }
 
-    /**
-     * Opens the restaurant location in Maps (same logic as RestaurantController)
-     */
+    // Opens the restaurant location in Maps
     private void openInMaps(Restaurant restaurant) {
         if (restaurant != null && restaurant.location() != null && !restaurant.location().isBlank()) {
             try {
@@ -621,9 +596,7 @@ public class QuizController {
         }
     }
 
-    /**
-     * Hides the overlay popup
-     */
+    // Hides the overlay popup
     private void hideOverlay() {
         overlayPane.setVisible(false);
     }

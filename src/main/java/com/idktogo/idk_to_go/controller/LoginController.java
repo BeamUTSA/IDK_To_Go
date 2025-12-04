@@ -28,16 +28,13 @@ public class LoginController {
             return;
         }
 
-        // === MySQL-based async authentication ===
+        // Authenticate user
         UserDAO.findByUsername(username)
                 .thenAccept(optionalUser -> Platform.runLater(() -> {
                     if (optionalUser.isPresent()) {
                         User user = optionalUser.get();
 
-                        // (Optional) Replace with hashed password check if implemented
                         if (user.password().equals(password)) {
-
-                            // ✅ Save session in persistent AppStorage
                             SessionManager.login(user.id(), user.username());
 
                             if (rememberMeCheck.isSelected()) {
@@ -61,12 +58,13 @@ public class LoginController {
                 });
     }
 
+    // Navigate to the registration scene
     @FXML
     private void goToRegister() {
         Navigation.load("/com/idktogo/idk_to_go/register.fxml");
     }
 
-    // Helper for alerts
+    // Show an alert dialog
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

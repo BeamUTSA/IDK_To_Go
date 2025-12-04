@@ -6,22 +6,13 @@ import java.nio.file.*;
 import java.util.prefs.Preferences;
 
 /**
- * AppStorage
- * -----------
- * Handles local file operations for saving session logs.
- * This class does not interact with the database — it’s
- * purely for local logging.
+ * Manages local file operations for session logs and user preferences.
  */
 public class AppStorage {
-    // File path for storing local session logs
     private static final String FILE_PATH = "data/history.txt";
     private static final Preferences prefs = Preferences.userNodeForPackage(AppStorage.class);
 
-
-
-    /**
-     * Ensures that the "data" directory and history file exist before writing.
-     */
+    // Ensure the data directory and history file exist
     private static void ensureFileExists() throws IOException {
         Path dir = Paths.get("data");
         if (!Files.exists(dir)) Files.createDirectories(dir);
@@ -30,9 +21,7 @@ public class AppStorage {
         if (!Files.exists(file)) Files.createFile(file);
     }
 
-    /**
-     * Appends a new session message to history.txt.
-     */
+    // Append a new session message to history.txt
     public static void saveSession(String content) {
         try {
             ensureFileExists();
@@ -59,7 +48,7 @@ public class AppStorage {
         currentUsername = null;
     }
 
-    /** Save a key-value pair persistently */
+    // Save a key-value pair
     public static void save(String key, String value) {
         try {
             prefs.put(key, value);
@@ -69,12 +58,12 @@ public class AppStorage {
         }
     }
 
-    /** Load a saved value */
+    // Load a saved value
     public static String load(String key) {
         return prefs.get(key, null);
     }
 
-    /** Remove a saved key */
+    // Remove a saved key
     public static void remove(String key) {
         try {
             prefs.remove(key);
@@ -84,7 +73,7 @@ public class AppStorage {
         }
     }
 
-    /** Clear all stored preferences (optional use) */
+    // Clear all stored preferences
     public static void clearAll() {
         try {
             prefs.clear();

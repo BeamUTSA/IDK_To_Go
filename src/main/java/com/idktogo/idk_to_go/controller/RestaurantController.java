@@ -31,13 +31,13 @@ public class RestaurantController {
     private int restaurantId;
     private String mapsUrl;
 
-    // ✅ Called when restaurant is selected
+    // Sets the restaurant ID and loads its details
     public void setRestaurantId(int id) {
         this.restaurantId = id;
         loadRestaurantDetails();
     }
 
-    // === LOAD RESTAURANT DETAILS ===
+    // Loads restaurant details from the database
     private void loadRestaurantDetails() {
         RestaurantDAO.findById(restaurantId)
                 .thenAccept(optionalRestaurant -> Platform.runLater(() -> {
@@ -52,7 +52,7 @@ public class RestaurantController {
                     mapsUrl = r.location();
                     locationLabel.setText("Open in Maps");
 
-                    // Load logo from classpath
+                    // Load restaurant logo
                     if (r.logo() != null && !r.logo().isBlank()) {
                         try {
                             String logoPath = r.logo();
@@ -78,7 +78,7 @@ public class RestaurantController {
                 });
     }
 
-    // === LOAD MENU ITEMS ===
+    // Loads menu items for the current restaurant
     private void loadMenuItems() {
         menuList.getChildren().clear();
 
@@ -111,7 +111,7 @@ public class RestaurantController {
                 });
     }
 
-    // === USER ACTIONS ===
+    // Handles liking a restaurant
     @FXML
     private void likeRestaurant() {
         Integer userId = SessionManager.getUserId();
@@ -129,6 +129,7 @@ public class RestaurantController {
                 });
     }
 
+    // Handles disliking a restaurant
     @FXML
     private void dislikeRestaurant() {
         Integer userId = SessionManager.getUserId();
@@ -146,6 +147,7 @@ public class RestaurantController {
                 });
     }
 
+    // Opens the restaurant's location in a map application
     @FXML
     private void openInMaps() {
         if (mapsUrl != null && !mapsUrl.isBlank()) {
@@ -157,6 +159,7 @@ public class RestaurantController {
         }
     }
 
+    // Navigates back to the main scene
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/main.fxml");

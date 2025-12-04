@@ -9,29 +9,27 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Centralized navigation utility for loading JavaFX scenes with a single stage.
- * Handles applying the current theme and injecting stage into controllers
- * that define a setStage(Stage) method.
+ * Manages JavaFX scene navigation using a single primary stage.
+ * Applies themes and injects the stage into controllers.
  */
 public final class Navigation {
 
-    // Holds a global reference to the primary Stage
+    // The main application window
     private static Stage appStage;
 
     private Navigation() {}
 
     /**
-     * Registers the main Stage to be used by subsequent navigation calls.
-     *
-     * @param stage global application window
+     * Sets the primary stage for the application.
+     * @param stage The main application window.
      */
     public static void setStage(Stage stage) {
         Navigation.appStage = stage;
     }
 
     /**
-     * Retrieves the currently registered Stage.
-     * @return primary Stage
+     * Gets the primary stage.
+     * @return The primary stage.
      */
     public static Stage getStage() {
         if (appStage == null) {
@@ -41,20 +39,17 @@ public final class Navigation {
     }
 
     /**
-     * Loads an FXML scene using the globally registered Stage.
-     * The controller is automatically provided with stage access, if a setStage(Stage) method exists.
-     *
-     * @param absoluteFxmlPath classpath to FXML, e.g. "/com/idktogo/idk_to_go/main.fxml"
+     * Loads an FXML scene.
+     * @param absoluteFxmlPath Classpath to the FXML file (e.g., "/com/idktogo/idk_to_go/main.fxml").
      */
     public static void load(String absoluteFxmlPath) {
         load(absoluteFxmlPath, null);
     }
 
     /**
-     * Loads an FXML scene with controller configuration support.
-     *
-     * @param absoluteFxmlPath classpath to FXML
-     * @param controllerConfigurator optional lambda to further configure the loaded controller
+     * Loads an FXML scene with an optional controller configuration.
+     * @param absoluteFxmlPath Classpath to the FXML file.
+     * @param controllerConfigurator Optional function to configure the controller.
      */
     public static void load(String absoluteFxmlPath, Consumer<Object> controllerConfigurator) {
         Objects.requireNonNull(absoluteFxmlPath, "FXML path cannot be null");
@@ -88,7 +83,7 @@ public final class Navigation {
     }
 
     /**
-     * Injects a stage into controllers that implement a public void setStage(Stage) method.
+     * Injects the stage into controllers that have a `setStage(Stage)` method.
      */
     private static void injectStageIfPresent(Object controller) {
         if (controller == null) {
@@ -98,8 +93,7 @@ public final class Navigation {
         try {
             controller.getClass().getMethod("setStage", Stage.class).invoke(controller, appStage);
         } catch (NoSuchMethodException e) {
-            // Controller does not support stage injection, this is fine
-            System.out.println("ℹ️ No setStage(Stage) found in " + controller.getClass().getSimpleName());
+            // No setStage(Stage) method found, which is acceptable.
         } catch (Exception e) {
             throw new RuntimeException("Failed to inject stage into controller: " + controller.getClass().getName(), e);
         }

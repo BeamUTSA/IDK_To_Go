@@ -6,6 +6,9 @@ import com.idktogo.idk_to_go.dao.RestaurantDAO;
 import com.idktogo.idk_to_go.model.Restaurant;
 import com.idktogo.idk_to_go.model.UserHistory;
 import com.idktogo.idk_to_go.service.HistoryService;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,13 +17,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.InputStream;
 import java.util.List;
 
 public class MainController {
 
-    // === FXML UI elements ===
+    @FXML private ImageView logoImageView;
     @FXML private Button optionsButton;
     @FXML private Button closestButton;
     @FXML private Button quizButton;
@@ -39,9 +43,26 @@ public class MainController {
     private void initialize() {
         loadHotRestaurant();
         loadHistoryList();
+        setupLogoAnimation();
     }
 
-    // === LOAD HOT RESTAURANT ===
+    private void setupLogoAnimation() {
+        Timeline shrinkAndGrow = new Timeline(
+                new KeyFrame(Duration.seconds(0.1), new javafx.animation.KeyValue(logoImageView.scaleXProperty(), 0.9), new javafx.animation.KeyValue(logoImageView.scaleYProperty(), 0.9)),
+                new KeyFrame(Duration.seconds(0.2), new javafx.animation.KeyValue(logoImageView.scaleXProperty(), 1.1), new javafx.animation.KeyValue(logoImageView.scaleYProperty(), 1.1)),
+                new KeyFrame(Duration.seconds(0.3), new javafx.animation.KeyValue(logoImageView.scaleXProperty(), 1.0), new javafx.animation.KeyValue(logoImageView.scaleYProperty(), 1.0))
+        );
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(5 + Math.random() * 5));
+        pause.setOnFinished(event -> {
+            shrinkAndGrow.play();
+            pause.setDuration(Duration.seconds(5 + Math.random() * 5)); // Reset for next pause
+            pause.play();
+        });
+        pause.play();
+    }
+
+    // Load the "hot" restaurant (top by weekly likes)
     private void loadHotRestaurant() {
         RestaurantDAO.topByWeeklyLikes(1)
                 .thenAccept(restaurants -> Platform.runLater(() -> {
@@ -58,6 +79,7 @@ public class MainController {
                 });
     }
 
+    // Display the hot restaurant's name and logo
     private void displayHotRestaurant(Restaurant restaurant) {
         hotRestaurant.setText(restaurant.name());
         String logoPath = restaurant.logo();
@@ -76,7 +98,7 @@ public class MainController {
         }
     }
 
-    // === LOAD USER HISTORY ===
+    // Load and display user's interaction history
     private void loadHistoryList() {
         historyBox.getChildren().clear();
 
@@ -121,27 +143,31 @@ public class MainController {
                 });
     }
 
-    // === NAVIGATION BUTTONS ===
+    // Navigate to the Closest Restaurants scene
     @FXML
     private void openClosest() {
         Navigation.load("/com/idktogo/idk_to_go/closest.fxml");
     }
 
+    // Navigate to the AI Quiz scene
     @FXML
     private void openQuiz() {
         Navigation.load("/com/idktogo/idk_to_go/quiz.fxml");
     }
 
+    // Navigate to the Trending Restaurants scene
     @FXML
     private void openTrending() {
         Navigation.load("/com/idktogo/idk_to_go/trending.fxml");
     }
 
+    // Navigate to the Options scene
     @FXML
     private void openOptions() {
         Navigation.load("/com/idktogo/idk_to_go/options.fxml");
     }
 
+    // Open the restaurant scene for the hot restaurant
     @FXML
     private void openRestaurantScene() {
         RestaurantDAO.topByWeeklyLikes(1)
@@ -160,7 +186,7 @@ public class MainController {
                 });
     }
 
-    // === UTILITY ===
+    // Open a URL in the default browser
     private void openUrl(String url) {
         try {
             java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));

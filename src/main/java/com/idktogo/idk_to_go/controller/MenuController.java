@@ -20,17 +20,16 @@ public class MenuController {
 
     private int restaurantId;
 
-    // Called when restaurant is selected
+    // Sets the restaurant ID and loads its menu
     public void setRestaurantId(int restaurantId) {
         this.restaurantId = restaurantId;
         loadMenuItems();
     }
 
-    // === LOAD RESTAURANT INFO + MENU ===
+    // Loads restaurant name and menu items
     private void loadMenuItems() {
         menuItemsBox.getChildren().clear();
 
-        // Load restaurant name
         RestaurantDAO.findById(restaurantId)
                 .thenAccept(restaurantOpt -> restaurantOpt.ifPresent(r ->
                         Platform.runLater(() ->
@@ -41,7 +40,6 @@ public class MenuController {
                     return null;
                 });
 
-        // Load menu items
         MenuItemDAO.listByRestaurant(restaurantId)
                 .thenAccept(items -> Platform.runLater(() -> {
                     menuItemsBox.getChildren().clear();
@@ -72,7 +70,7 @@ public class MenuController {
                 });
     }
 
-    // === ADD MENU ITEM ===
+    // Adds a new menu item
     @FXML
     private void addMenuItem() {
         String name = itemNameField.getText().trim();
@@ -105,7 +103,7 @@ public class MenuController {
         }
     }
 
-    // === DELETE MENU ITEM ===
+    // Deletes a menu item
     private void deleteMenuItem(int menuItemId) {
         MenuItemDAO.delete(menuItemId)
                 .thenRun(() -> Platform.runLater(this::loadMenuItems))
@@ -115,7 +113,7 @@ public class MenuController {
                 });
     }
 
-    // === UTILITY ===
+    // Displays an alert dialog
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -124,6 +122,7 @@ public class MenuController {
         alert.showAndWait();
     }
 
+    // Navigates back to the admin panel
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/admin.fxml");

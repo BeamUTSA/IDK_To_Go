@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="750" prefWidth="400" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idktogo.idk_to_go.controller.QuizController">
+<StackPane fx:id="rootStackPane" prefHeight="750" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.idktogo.idk_to_go.controller.QuizController">
 
-    <!-- Top Bar -->
-    <top>
-        <BorderPane styleClass="toolbar">
-            <left>
-                <Button onAction="#goBack" text="← Back" />
-            </left>
+    <!-- Main Quiz Content -->
+    <BorderPane fx:id="mainContent" styleClass="root-pane">
 
-            <center>
-                <Label prefHeight="17.0" prefWidth="140.0" styleClass="title-label" text="Food Quiz" />
-            </center>
-        </BorderPane>
-    </top>
+        <!-- Top Bar -->
+        <top>
+            <BorderPane styleClass="toolbar">
+                <left>
+                    <Button onAction="#goBack" text="Back" />
+                </left>
+                <center>
+                    <Label styleClass="title-label" text="AI Food Quiz" />
+                </center>
+            </BorderPane>
+        </top>
 
-    <!-- Center content placeholder -->
-    <center>
-        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40 20;">
-            <Label styleClass="subtitle-label" text="Quiz Feature Coming Soon!" />
-            <Button onAction="#generateQuiz" text="Run Sample Quiz" />
+        <!-- Center Content -->
+        <center>
+            <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
+                <Label fx:id="quizStatusLabel" styleClass="status-label" text="Generating quiz..." />
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="quizContainer" spacing="15" />
+                </ScrollPane>
+                <Button fx:id="submitButton" onAction="#generateRecommendation" text="Find a Restaurant" visible="false" />
+            </VBox>
+        </center>
+
+    </BorderPane>
+
+    <!-- Overlay for Restaurant Recommendation (hidden by default) -->
+    <VBox fx:id="overlayPane" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.7);" visible="false">
+        <VBox fx:id="recommendationCard" alignment="CENTER" maxWidth="360" maxHeight="550" style="-fx-background-color: white; -fx-background-radius: 16;">
+            <padding>
+                <Insets bottom="25" left="25" right="25" top="15" />
+            </padding>
         </VBox>
-    </center>
+    </VBox>
 
-</BorderPane>
+</StackPane>

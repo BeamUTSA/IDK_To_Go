@@ -22,7 +22,7 @@ public class TrendingController {
         loadWeeklyTrending();
     }
 
-    // === Weekly Trending ===
+    // Show weekly trending restaurants
     @FXML
     private void showWeekly() {
         highlightTab(weeklyButton);
@@ -52,7 +52,7 @@ public class TrendingController {
                 });
     }
 
-    // === All-Time Trending ===
+    // Show all-time trending restaurants
     @FXML
     private void showAllTime() {
         highlightTab(allTimeButton);
@@ -82,7 +82,7 @@ public class TrendingController {
                 });
     }
 
-    // === Row Builder ===
+    // Create a display row for a restaurant
     private HBox createRestaurantRow(Restaurant restaurant) {
         HBox row = new HBox(10);
         row.setStyle("""
@@ -102,7 +102,7 @@ public class TrendingController {
         return row;
     }
 
-    // === Navigation ===
+    // Open the restaurant details scene
     private void openRestaurantScene(int restaurantId) {
         Navigation.load("/com/idktogo/idk_to_go/restaurant.fxml", controller -> {
             if (controller instanceof RestaurantController rc) {
@@ -111,6 +111,7 @@ public class TrendingController {
         });
     }
 
+    // Highlight the active tab button
     private void highlightTab(Button activeButton) {
         String inactiveStyle = "-fx-background-color: #dfe6e9; -fx-padding: 5 15;";
         String activeStyle   = "-fx-background-color: #00BFFF; -fx-padding: 5 15; -fx-text-fill: white;";
@@ -120,6 +121,7 @@ public class TrendingController {
         activeButton.setStyle(activeStyle);
     }
 
+    // Navigate back to the main scene
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/main.fxml");

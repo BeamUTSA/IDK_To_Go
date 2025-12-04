@@ -4,48 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/history.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/DatabaseConnector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/HistoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/images/app-icon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/idktogo.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AppearanceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/AppearanceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/EditAccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/EditAccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/OptionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/OptionsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RegisterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RegisterController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RestaurantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/RestaurantController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/TrendingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/controller/TrendingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/core/EventLogger.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/HistoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/HistoryDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/MenuItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/MenuItemDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/RestaurantDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/RestaurantDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/dao/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/data/SQLiteManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/MenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/Restaurant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/UserHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/model/UserHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/RestaurantMenuService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/RestaurantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/RestaurantService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/UserHistoryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/state/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/idktogo/idk_to_go/state/AppState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+    <list default="true" id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="I flipping works!">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/admin_menu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/closest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/closest.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sqlite.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-dark.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-dark.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-light.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global-light.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/trending.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/idktogo/idk_to_go/trending.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tree.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,10 +30,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -76,7 +51,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/BeamUTSA/IDK_To_Go.git&quot;,
-    &quot;accountId&quot;: &quot;558bba94-dbeb-457e-989c-cd4ecbb219f9&quot;
+    &quot;accountId&quot;: &quot;060602f3-a3ff-47b1-b4ec-125748a3b9a7&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -101,47 +76,58 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
-    &quot;Maven.IDK-To-Go.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.Main.executor": "Run",
+    "Maven.IDK-To-Go [org.apache.maven.plugins:maven-jar-plugin:3.4.1:jar].executor": "Run",
+    "Maven.IDK-To-Go.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "ai__implement1",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "inlay.hints",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="ms-21" />
+      <option name="ALTERNATIVE_JRE_PATH" value="24" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.idktogo.idk_to_go.Main" />
-      <module name="IDK-To-Go" />
+      <module name="IDK_To_Go" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.idktogo.idk_to_go.*" />
           <option name="ENABLED" value="true" />
         </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
@@ -187,14 +173,6 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="f153180a-1f0c-4820-8abe-19085a7071c2" name="Changes" comment="" />
@@ -205,6 +183,47 @@
       <workItem from="1762301848773" duration="2385000" />
       <workItem from="1762403600895" duration="8651000" />
     </task>
+    <task id="LOCAL-00001" summary="Quiz Communication + Generation support fixed.">
+      <option name="closed" value="true" />
+      <created>1764788312373</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1764788312373</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Quiz Debug added">
+      <option name="closed" value="true" />
+      <created>1764788611679</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764788611679</updated>
+    </task>
+    <task id="LOCAL-00003" summary="I flipping works!">
+      <option name="closed" value="true" />
+      <created>1764790106410</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764790106410</updated>
+    </task>
+    <task id="LOCAL-00004" summary="I flipping works!">
+      <option name="closed" value="true" />
+      <created>1764791621888</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764791621888</updated>
+    </task>
+    <task id="LOCAL-00005" summary="I flipping works!">
+      <option name="closed" value="true" />
+      <created>1764792083445</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764792083445</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,5 +231,11 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.exe" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Quiz Communication + Generation support fixed." />
+    <MESSAGE value="Quiz Debug added" />
+    <MESSAGE value="I flipping works!" />
+    <option name="LAST_COMMIT_MESSAGE" value="I flipping works!" />
   </component>
 </project>

@@ -1,24 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<?import java.net.URL?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.idktogo.idk_to_go.controller.ClosestController"
-      spacing="15"
+      spacing="0"
       prefWidth="400" prefHeight="750"
-      alignment="CENTER"
       styleClass="root-pane">
 
-    <Label text="Find Closest Restaurants" styleClass="title-label"/>
+    <!-- Top: Gradient Header -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="gradient-header">
+        <Button text="←" onAction="#goBack" styleClass="icon-button">
+            <font>
+                <Font size="20"/>
+            </font>
+        </Button>
+        <Label text="Nearby" styleClass="title-label">
+            <font>
+                <Font name="System Bold" size="28"/>
+            </font>
+        </Label>
+    </HBox>
 
-    <Button text="Open in Google Maps"
-            onAction="#openMaps" />
+    <!-- Center: Main Content -->
+    <VBox alignment="CENTER" spacing="24" style="-fx-padding: 40;" VBox.vgrow="ALWAYS">
+        <!-- Icon/Illustration Area -->
+        <VBox alignment="CENTER" spacing="16" styleClass="empty-state">
+            <Label text="📍" styleClass="empty-state-icon" style="-fx-font-size: 80px;"/>
+            <Label text="Find Closest Restaurants" styleClass="section-title" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+            <Label text="We'll find the nearest restaurants to your current location"
+                   styleClass="empty-state-text"
+                   wrapText="true"
+                   textAlignment="CENTER"
+                   maxWidth="300">
+                <font>
+                    <Font size="16"/>
+                </font>
+            </Label>
+        </VBox>
 
-    <Button text="← Back"
-            onAction="#goBack" />
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <!-- Action Buttons -->
+        <VBox spacing="12" alignment="CENTER" maxWidth="320">
+            <Button text="🗺️Open in Google Maps"
+                    onAction="#openMaps"
+                    maxWidth="Infinity"
+                    prefHeight="52"
+                    style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+            <!-- Optional: Add refresh/current location button -->
+            <Button text="📡 Use Current Location"
+                    styleClass="secondary-button"
+                    maxWidth="Infinity"
+                    prefHeight="44"
+                    style="-fx-font-size: 15px;"/>
+        </VBox>
+
+        <Region prefHeight="20"/>
+    </VBox>
+
+    <!-- Optional Bottom Info -->
+    <HBox alignment="CENTER" style="-fx-padding: 16; -fx-background-color: rgba(0,0,0,0.02);">
+        <Label text="💡 Tip: Enable location services for better results"
+               style="-fx-font-size: 13px;"
+               styleClass="subtitle-label"
+               textAlignment="CENTER"
+               wrapText="true"/>
+    </HBox>
 
 </VBox>

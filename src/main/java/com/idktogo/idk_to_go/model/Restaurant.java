@@ -1,9 +1,5 @@
 package com.idktogo.idk_to_go.model;
 
-/**
- * Immutable Restaurant record for database mapping.
- * Compact and modern replacement for the original POJO.
- */
 public record Restaurant(
         int id,
         String name,
@@ -15,12 +11,12 @@ public record Restaurant(
         int weeklyLikes,
         String logo
 ) {
-    // Secondary constructor for no-arg compatibility (e.g JavaFX / DAO frameworks)
+    // Default constructor
     public Restaurant() {
         this(0, "", "", "", 0, 0, 0, 0, "");
     }
 
-    // Copy constructor for convenience when updating certain fields
+    // Copy constructor for updating specific fields
     public Restaurant withLikes(int newLikes) {
         return new Restaurant(id, name, category, location, newLikes, dislikes, netScore, weeklyLikes, logo);
     }

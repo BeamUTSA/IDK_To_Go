@@ -7,7 +7,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.idktogo.idk_to_go.controller.AdminController"
-            prefWidth="400" prefHeight="750"
+            prefWidth="480" prefHeight="900"
             styleClass="root-pane">
 
     <!-- Top: Header with Back Button -->
@@ -18,9 +18,9 @@
         </HBox>
     </top>
 
-    <!-- Center: Scrollable List of Restaurants -->
+    <!-- Center: Scrollable list of restaurants -->
     <center>
-        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+        <ScrollPane fitToWidth="true">
             <VBox fx:id="restaurantList" spacing="10" styleClass="padded-box" />
         </ScrollPane>
     </center>
@@ -30,7 +30,9 @@
         <VBox spacing="10" alignment="CENTER" styleClass="padded-box">
             <Button text="Add New Restaurant" onAction="#addRestaurant" />
             <Button text="Reset Weekly Stats" onAction="#resetWeeklyStats" />
-            <Button text="Clear All User Histories" onAction="#clearAllHistory" styleClass="danger-button" />
+            <Button text="Clear All User Histories"
+                    onAction="#clearAllHistory"
+                    styleClass="danger-button" />
         </VBox>
     </bottom>
 

@@ -20,7 +20,7 @@
     <top>
         <HBox fx:id="topBar" alignment="CENTER" prefHeight="100" styleClass="homebar">
             <Button fx:id="optionsButton" onAction="#openOptions" styleClass="icon-button" text="≡" />
-            <ImageView fitHeight="108.0" fitWidth="116.0" preserveRatio="true" style="-fx-translate-x: 92;">
+            <ImageView fx:id="logoImageView" fitHeight="108.0" fitWidth="116.0" preserveRatio="true" style="-fx-translate-x: 92;">
                 <Image url="@images/IDK_To_Go_Logo.png" />
             </ImageView>
             <Region HBox.hgrow="ALWAYS" />

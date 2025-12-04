@@ -11,7 +11,7 @@ public final class UserDAO {
 
     private UserDAO() {}
 
-    // === CREATE ===
+    // Create operations
     public static CompletableFuture<Integer> create(User user) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = """
@@ -39,7 +39,7 @@ public final class UserDAO {
         });
     }
 
-    // === READ ===
+    // Read operations
     public static CompletableFuture<Optional<User>> findById(int id) {
         return querySingle("SELECT * FROM users WHERE id = ?", ps -> ps.setInt(1, id));
     }
@@ -71,7 +71,7 @@ public final class UserDAO {
         });
     }
 
-    // === UPDATE ===
+    // Update operations
     public static CompletableFuture<Boolean> update(User user) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = """
@@ -95,12 +95,12 @@ public final class UserDAO {
         });
     }
 
-    // === DELETE ===
+    // Delete operations
     public static CompletableFuture<Boolean> delete(int id) {
         return executeUpdate("DELETE FROM users WHERE id = ?", ps -> ps.setInt(1, id));
     }
 
-    // === UTIL ===
+    // Utility methods
     private static User mapRow(ResultSet rs) throws SQLException {
         return new User(
                 rs.getInt("id"),

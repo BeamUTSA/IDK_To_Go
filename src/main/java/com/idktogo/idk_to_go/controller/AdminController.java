@@ -26,7 +26,7 @@ public class AdminController {
         loadRestaurants();
     }
 
-    // === LOAD RESTAURANTS ===
+    // Load all restaurants into the list
     private void loadRestaurants() {
         restaurantList.getChildren().clear();
 
@@ -66,7 +66,7 @@ public class AdminController {
         });
     }
 
-    // === ADD NEW RESTAURANT ===
+    // Add a new restaurant
     @FXML
     private void addRestaurant() {
         String name = nameField.getText().trim();
@@ -100,6 +100,7 @@ public class AdminController {
                 });
     }
 
+    // Clear input fields
     private void clearFields() {
         nameField.clear();
         categoryField.clear();
@@ -107,11 +108,12 @@ public class AdminController {
         logoField.clear();
     }
 
-    // === EDIT / DELETE / MENU MANAGEMENT ===
+    // Edit an existing restaurant
     private void editRestaurant(int restaurantId) {
         showAlert("Info", "Edit restaurant " + restaurantId + " (not implemented yet).");
     }
 
+    // Delete a restaurant
     private void deleteRestaurant(int restaurantId) {
         RestaurantDAO.delete(restaurantId)
                 .thenRun(() -> Platform.runLater(() -> {
@@ -124,6 +126,7 @@ public class AdminController {
                 });
     }
 
+    // Manage menu items for a restaurant
     private void manageMenu(int restaurantId) {
         Navigation.load("/com/idktogo/idk_to_go/admin_menu.fxml", controller -> {
             if (controller instanceof MenuController mc) {
@@ -132,7 +135,7 @@ public class AdminController {
         });
     }
 
-    // === ADMIN UTILITIES ===
+    // Reset weekly likes for all restaurants
     @FXML
     private void resetWeeklyStats() {
         RestaurantDAO.resetWeeklyLikes()
@@ -146,6 +149,7 @@ public class AdminController {
                 });
     }
 
+    // Clear all user history
     @FXML
     private void clearAllHistory() {
         HistoryDAO.deleteAllForAllUsers()
@@ -156,12 +160,13 @@ public class AdminController {
                 });
     }
 
+    // Navigate back to the previous scene
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/options.fxml");
     }
 
-    // === ALERT HELPER ===
+    // Show an alert dialog
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

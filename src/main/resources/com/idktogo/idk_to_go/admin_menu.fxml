@@ -3,30 +3,83 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.idktogo.idk_to_go.controller.MenuController"
-      prefWidth="400" prefHeight="750"
-      spacing="15"
-      styleClass="root-pane">
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.idktogo.idk_to_go.controller.AdminController"
+            prefWidth="480" prefHeight="900"
+            styleClass="root-pane">
 
-    <!-- Header with Back Button -->
-    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="toolbar">
-        <Button text="← Back" onAction="#goBack" />
-        <Label fx:id="restaurantNameLabel" text="Restaurant Menu" styleClass="title-label" />
-    </HBox>
+    <!-- Top: Header with Gradient Background -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="gradient-header">
+            <Button text="←" onAction="#goBack" styleClass="icon-button">
+                <font>
+                    <Font size="20"/>
+                </font>
+            </Button>
+            <Label text="Admin Panel" styleClass="title-label">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </top>
 
-    <!-- Menu Items List -->
-    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-        <VBox fx:id="menuItemsBox" spacing="10" styleClass="padded-box" />
-    </ScrollPane>
+    <!-- Center: Scrollable List of Restaurants -->
+    <center>
+        <VBox spacing="0" styleClass="padded-box">
+            <!-- Section Header -->
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="🏪" style="-fx-font-size: 24px;"/>
+                <Label text="Restaurants" styleClass="section-title">
+                    <font>
+                        <Font name="System Bold" size="24"/>
+                    </font>
+                </Label>
+            </HBox>
 
-    <!-- Add New Menu Item Row -->
-    <HBox spacing="10" styleClass="padded-box">
-        <TextField fx:id="itemNameField" promptText="Item Name" />
-        <TextField fx:id="itemPriceField" promptText="Price" />
-        <Button text="Add Item" onAction="#addMenuItem" />
-    </HBox>
+            <Region prefHeight="16"/>
 
-</VBox>
+            <!-- Scrollable Restaurant List -->
+            <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                <VBox fx:id="restaurantList" spacing="12" style="-fx-padding: 4;">
+                    <!-- Restaurant cards will be added here dynamically -->
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+    <!-- Bottom: Global Admin Actions with Icons -->
+    <bottom>
+        <VBox spacing="12" alignment="CENTER"
+              style="-fx-padding: 20; -fx-background-color: rgba(0,0,0,0.02);">
+            <Label text="⚡ Quick Actions" styleClass="subtitle-label"
+                   style="-fx-font-weight: bold;"/>
+
+            <Button text="➕ Add New Restaurant" onAction="#addRestaurant"
+                    maxWidth="Infinity" prefHeight="44">
+                <font>
+                    <Font name="System Bold" size="15"/>
+                </font>
+            </Button>
+
+            <Button text="🔄 Reset Weekly Stats" onAction="#resetWeeklyStats"
+                    styleClass="secondary-button" maxWidth="Infinity" prefHeight="44">
+                <font>
+                    <Font size="15"/>
+                </font>
+            </Button>
+
+            <Button text="🗑️ Clear All User Histories" onAction="#clearAllHistory"
+                    styleClass="danger-button" maxWidth="Infinity" prefHeight="44">
+                <font>
+                    <Font name="System Bold" size="15"/>
+                </font>
+            </Button>
+        </VBox>
+    </bottom>
+
+</BorderPane>

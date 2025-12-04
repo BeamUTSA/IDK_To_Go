@@ -1,15 +1,14 @@
 /**************************************************************
- * GLOBAL (shared) — structure, spacing, and subtle light defaults
- * Uses looked-up colors (JavaFX variables) that themes override.
+ * GLOBAL (shared) – Valid JavaFX CSS only
+ * Modern, cohesive design with playful touches
  **************************************************************/
 
-/* ====== Default looked-up colors (slightly darker than light) ====== */
+/* ====== Default color variables ====== */
 .root, .root-pane {
-    /* Subtle light-ish defaults so UI is OK even without theme files */
     -color-bg:            #f3f3f3;
     -color-text:          #1f1f1f;
     -color-muted:         #485564;
-    -color-accent:        #00B6F0;  /* slightly darker than #00BFFF */
+    -color-accent:        #00B6F0;
     -color-on-accent:     #ffffff;
     -color-card-bg:       #fbfbfb;
     -color-border:        #d6d6d6;
@@ -18,6 +17,7 @@
 
     -color-like:          #e8f5e9;
     -color-dislike:       #ffebee;
+    -color-danger:        #ef5350;
 
     -color-hover:         rgba(0,0,0,0.05);
     -color-hover-strong:  rgba(0,0,0,0.08);
@@ -26,134 +26,196 @@
 
     -color-tab:           #ecf2f7;
     -color-tab-hover:     #e2eaf1;
-
-    /* Trending pane default */
     -color-trending-bg:   #ffffff;
 }
 
-/* ====== Base page containers ====== */
+/* ====== Base containers ====== */
 .root-pane {
     -fx-background-color: -color-bg;
 }
 
-/* ====== Text scale utilities ====== */
+/* ====== Typography ====== */
 .title-label {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-text;
 }
+
 .section-title {
     -fx-font-size: 32px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-text;
 }
+
 .subtitle-label {
     -fx-font-size: 18px;
     -fx-text-fill: -color-muted;
 }
+
 .danger-label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-muted;
+    -fx-text-fill: -color-danger;
 }
 
 /* ====== Buttons ====== */
 .button {
-    -fx-background-radius: 10;
-    -fx-padding: 8 16;
+    -fx-background-radius: 12;
+    -fx-padding: 12 24;
     -fx-cursor: hand;
     -fx-font-size: 16px;
+    -fx-font-weight: 600;
     -fx-background-color: -color-accent;
     -fx-text-fill: -color-on-accent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
 }
-.button:hover   { -fx-scale-x: 1.03; -fx-scale-y: 1.03; }
-.button:pressed { -fx-scale-x: 0.97; -fx-scale-y: 0.97; }
 
-/* Icon-only buttons (menu, back on colored bars) */
-.icon-button, .nav-button {
+.button:hover {
+    -fx-background-color: #00A8E0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0.25, 0, 3);
+}
+
+.button:disabled {
+    -fx-background-color: #0090C0;
+}
+
+/* Secondary button */
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-accent;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-text-fill: -color-accent;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(0, 182, 240, 0.1);
+}
+
+/* Icon buttons */
+.icon-button {
     -fx-background-color: transparent;
     -fx-text-fill: inherit;
-}
-
-/* Logout / Admin variants (text color only; background from theme) */
-.logout-button  { -fx-text-fill: #d64545; }
-.option-button  { -fx-background-color: #cccccc; }
-
-/* ====== Toolbars / Homebar ====== */
-.toolbar, .homebar {
-    -fx-background-color: -color-toolbar;
-}
-.homebar { -fx-padding: 0; }     /* For Main.fxml exact fit */
-.toolbar { -fx-padding: 10; }    /* General pages */
-
-/* ====== Sections / cards ====== */
-.section-pane {
-    -fx-background-color: -color-card-bg;
-}
-.left-section {
-    -fx-border-color: -color-border;
-    -fx-border-width: 0 1 0 0;
-}
-
-/* Utility for vertical padding in containers */
-.padded-box {
-    -fx-padding: 15;
-}
-
-/* Card-like “Hot RN” button */
-.card-button {
-    -fx-background-color: transparent;
-    -fx-padding: 10;
+    -fx-padding: 8;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
 }
-.card-button:hover {
-    -fx-background-color: -color-hover;
-}
-.card-button:focused,
-.card-button:armed,
-.card-button:selected {
-    -fx-background-color: -color-hover-strong;
+
+.icon-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Card text */
+/* Danger button */
+.danger-button {
+    -fx-background-color: -color-danger;
+    -fx-text-fill: white;
+}
+
+.danger-button:hover {
+    -fx-background-color: #e53935;
+}
+
+/* Logout button */
+.logout-button {
+    -fx-text-fill: -color-danger;
+    -fx-background-color: transparent;
+    -fx-border-color: -color-danger;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.logout-button:hover {
+    -fx-background-color: rgba(239, 83, 80, 0.1);
+}
+
+/* ====== Toolbars ====== */
+.toolbar, .homebar {
+    -fx-background-color: -color-toolbar;
+    -fx-padding: 16;
+    -fx-spacing: 12;
+}
+
+.homebar {
+    -fx-padding: 0;
+}
+
+/* ====== Cards and sections ====== */
+.section-pane {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
+}
+
+.padded-box {
+    -fx-padding: 20;
+    -fx-spacing: 12;
+}
+
+.card-button {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
+}
+
+.card-button:hover {
+    -fx-background-color: -color-hover;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0.25, 0, 3);
+}
+
 .card-title {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-text;
 }
+
 .card-subtitle {
     -fx-font-size: 18px;
     -fx-text-fill: -color-muted;
 }
 
-/* ====== Scroll areas ====== */
+/* ====== Scroll panes ====== */
 .scroll-pane {
-    -fx-background-color: -color-card-bg;
-    -fx-border-color: -color-border;
-}
-.scroll-content {
-    -fx-background-color: -color-card-bg;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 
-/* ====== History list buttons ====== */
-.history-button {
+.scroll-pane > .viewport {
     -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #b0d4f1;
+    -fx-background-radius: 4;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: -color-accent;
+}
+
+/* ====== History buttons ====== */
+.history-button {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 10;
     -fx-font-size: 16px;
-    -fx-padding: 6 10;
+    -fx-padding: 12 16;
     -fx-cursor: hand;
     -fx-text-fill: -color-text;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
 }
+
 .history-button:hover {
     -fx-background-color: -color-hover;
 }
-.history-button:focused,
-.history-button:armed,
-.history-button:selected {
-    -fx-background-color: -color-selection;
-    -fx-text-fill: -color-on-selection;
-}
 
-/* ====== Link label ====== */
+/* ====== Links ====== */
 .link-label {
     -fx-font-size: 14px;
     -fx-text-fill: -color-link;
@@ -161,39 +223,134 @@
     -fx-cursor: hand;
 }
 
-/* ====== Like / Dislike badges ====== */
-.like-button    { -fx-background-color: -color-like; }
-.dislike-button { -fx-background-color: -color-dislike; }
+.link-label:hover {
+    -fx-text-fill: #104a8a;
+}
 
-/* ====== Tabs (Trending) ====== */
-.tab-button {
-    -fx-background-radius: 10;
+/* ====== Like/Dislike ====== */
+.like-button {
+    -fx-background-color: -color-like;
+    -fx-background-radius: 20;
     -fx-padding: 8 16;
+}
+
+.dislike-button {
+    -fx-background-color: -color-dislike;
+    -fx-background-radius: 20;
+    -fx-padding: 8 16;
+}
+
+/* ====== Tabs ====== */
+.tab-button {
+    -fx-background-radius: 12;
+    -fx-padding: 10 20;
     -fx-font-size: 14px;
+    -fx-font-weight: 600;
     -fx-cursor: hand;
     -fx-background-color: -color-tab;
     -fx-text-fill: -color-text;
 }
+
 .tab-button:hover {
     -fx-background-color: -color-tab-hover;
 }
-.tab-button:selected,
-.tab-button:focused {
-    -fx-background-color: -color-accent;
-    -fx-text-fill: -color-on-accent;
-    -fx-font-weight: bold;
-}
 
-/* ====== Middle area passthrough ====== */
-.middle-section {
-    -fx-background-color: transparent;
-}
-
-/* ====== Trending page container ====== */
+/* ====== Trending ====== */
 .trending-pane {
     -fx-background-color: -color-trending-bg;
 }
+
 .trending-score {
     -fx-text-fill: -color-muted;
     -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* ====== Text fields ====== */
+.text-field {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 10;
+    -fx-border-color: -color-border;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-padding: 10 14;
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-text;
+}
+
+.text-field:focus {
+    -fx-border-color: -color-accent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
+}
+
+/* ====== Restaurant cards ====== */
+.restaurant-card {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
+}
+
+.restaurant-name {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text;
+}
+
+.restaurant-info {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-muted;
+}
+
+/* ====== Menu item cards ====== */
+.menu-item-card {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 10;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.2, 0, 2);
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+.menu-item-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-text-fill: -color-text;
+}
+
+.menu-item-price {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-accent;
+}
+
+/* ====== Empty states ====== */
+.empty-state {
+    -fx-alignment: CENTER;
+    -fx-spacing: 16;
+    -fx-padding: 40;
+}
+
+.empty-state-icon {
+    -fx-font-size: 48px;
+    -fx-text-fill: -color-muted;
+}
+
+.empty-state-text {
+    -fx-font-size: 18px;
+    -fx-text-fill: -color-muted;
+    -fx-text-alignment: CENTER;
+}
+
+/* ====== Gradient header ====== */
+.gradient-header {
+    -fx-background-color: linear-gradient(to right, #00B6F0, #00D4FF);
+    -fx-padding: 24;
+}
+
+.gradient-header .title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
 }

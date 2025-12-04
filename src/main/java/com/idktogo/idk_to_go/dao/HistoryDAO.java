@@ -7,16 +7,11 @@ import java.sql.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * HistoryDAO
- * Manages user like/dislike interactions with restaurants asynchronously.
- * Fully compatible with MySQL and Java record-based models.
- */
 public final class HistoryDAO {
 
     private HistoryDAO() {}
 
-    // === CREATE / UPDATE (UPSERT) ===
+    // Upsert operations
     public static CompletableFuture<Void> upsertInteraction(int userId, int restaurantId, Integer likedValue) {
         return CompletableFuture.runAsync(() -> {
             String sql = """
@@ -42,7 +37,7 @@ public final class HistoryDAO {
         });
     }
 
-    // === READ ===
+    // Read operations
     public static CompletableFuture<Optional<Integer>> getInteractionType(int userId, int restaurantId) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = "SELECT liked FROM user_history WHERE user_id = ? AND restaurant_id = ?";
@@ -59,7 +54,7 @@ public final class HistoryDAO {
                     }
                 }
             } catch (SQLException e) {
-                throw new RuntimeException("Failed to fetch interaction type: " + e.getMessage(), e);
+                throw new RuntimeException("Failed to fetch interaction type: " + e);
             }
             return Optional.empty();
         });
@@ -85,7 +80,7 @@ public final class HistoryDAO {
         });
     }
 
-    // === DELETE ===
+    // Delete operations
     public static CompletableFuture<Boolean> deleteInteraction(int userId, int restaurantId) {
         return CompletableFuture.supplyAsync(() -> {
             String sql = "DELETE FROM user_history WHERE user_id = ? AND restaurant_id = ?";
@@ -129,7 +124,7 @@ public final class HistoryDAO {
         });
     }
 
-    // === Utility Mapper ===
+    // Map ResultSet to UserHistory object
     private static UserHistory mapRow(ResultSet rs) throws SQLException {
         Integer liked = rs.getInt("liked");
         if (rs.wasNull()) liked = null;

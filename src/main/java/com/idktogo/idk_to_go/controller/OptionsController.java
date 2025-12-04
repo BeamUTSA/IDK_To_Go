@@ -13,7 +13,7 @@ public class OptionsController {
 
     @FXML
     private void initialize() {
-        adminButton.setVisible(false); // Hide until user verified
+        adminButton.setVisible(false); // Hide until user is verified as admin
 
         Integer userId = SessionManager.getUserId();
         if (userId != null) {
@@ -29,35 +29,37 @@ public class OptionsController {
         }
     }
 
-    // ----------------------------------------
-    // Navigation
-    // ----------------------------------------
-
+    // Navigate back to the main scene
     @FXML
     private void goBack() {
         Navigation.load("/com/idktogo/idk_to_go/main.fxml");
     }
 
+    // Open the edit account scene
     @FXML
     private void openEditAccount() {
         Navigation.load("/com/idktogo/idk_to_go/edit_account.fxml");
     }
 
+    // Open appearance settings
     @FXML
     private void openAppearanceSettings() {
         Navigation.load("/com/idktogo/idk_to_go/appearance.fxml");
     }
 
+    // Open the about-app scene
     @FXML
     private void openAboutApp() {
         Navigation.load("/com/idktogo/idk_to_go/about_app.fxml");
     }
 
+    // Open the admin panel
     @FXML
     private void openAdmin() {
         Navigation.load("/com/idktogo/idk_to_go/admin.fxml");
     }
 
+    // Log out the current user and go to login scene
     @FXML
     private void logout() {
         SessionManager.logout();

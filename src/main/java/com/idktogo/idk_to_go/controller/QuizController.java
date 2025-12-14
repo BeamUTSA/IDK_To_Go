@@ -1,14 +1,9 @@
 package com.idktogo.idk_to_go.controller;
 
 import com.idktogo.idk_to_go.core.Navigation;
-import com.idktogo.idk_to_go.core.OpenAiConfig;
+import com.idktogo.idk_to_go.core.ClaudeConfig;
 import com.idktogo.idk_to_go.dao.RestaurantDAO;
 import com.idktogo.idk_to_go.model.Restaurant;
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletion;
-import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -22,6 +17,9 @@ import org.json.JSONObject;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -36,35 +34,38 @@ public class QuizController {
     @FXML private VBox overlayPane;
     @FXML private VBox recommendationCard;
 
-    private OpenAIClient client;
+    private static final String CLAUDE_API_URL = "https://api.anthropic.com/v1/messages";
+    private static final String CLAUDE_MODEL = "claude-sonnet-4-20250514";
+    private static final String ANTHROPIC_VERSION = "2023-06-01";
+
+    private HttpClient httpClient;
+    private String apiKey;
     private List<Restaurant> allRestaurants;
     private final Map<String, String> questionAnswerMap = new LinkedHashMap<>();
 
     @FXML
     public void initialize() {
         try {
-            String apiKey = OpenAiConfig.getApiKey();
-            this.client = OpenAIOkHttpClient.builder()
-                    .apiKey(apiKey)
-                    .build();
-            System.out.println("OpenAI client initialized successfully");
+            this.apiKey = ClaudeConfig.getApiKey();
+            this.httpClient = HttpClient.newHttpClient();
+            System.out.println("Claude client initialized successfully");
         } catch (Exception e) {
-            System.err.println("Failed to initialize OpenAIClient: " + e.getMessage());
+            System.err.println("Failed to initialize Claude client: " + e.getMessage());
             e.printStackTrace();
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Configuration Error");
-                alert.setHeaderText("OpenAI API Key Not Found");
+                alert.setHeaderText("Claude API Key Not Found");
                 alert.setContentText("The application could not initialize the AI service.\n\n" +
                         "Please create a config.properties file in your project root with:\n" +
-                        "openai.api.key=your_actual_key_here\n\n" +
+                        "claude.api.key=your_actual_key_here\n\n" +
                         "Error: " + e.getMessage());
                 alert.showAndWait();
-                quizStatusLabel.setText("Error: OpenAI API key not configured.");
+                quizStatusLabel.setText("Error: Claude API key not configured.");
             });
         }
 
-        if (client != null) {
+        if (httpClient != null && apiKey != null) {
             loadAllRestaurantsAndGenerateQuiz();
         }
     }
@@ -87,9 +88,45 @@ public class QuizController {
                 });
     }
 
+    private String callClaudeApi(String systemMessage, String userMessage, int maxTokens, double temperature) throws Exception {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", CLAUDE_MODEL);
+        requestBody.put("max_tokens", maxTokens);
+
+        JSONArray messages = new JSONArray();
+        JSONObject userMsg = new JSONObject();
+        userMsg.put("role", "user");
+        userMsg.put("content", userMessage);
+        messages.put(userMsg);
+        requestBody.put("messages", messages);
+
+        requestBody.put("system", systemMessage);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(CLAUDE_API_URL))
+                .header("Content-Type", "application/json")
+                .header("x-api-key", apiKey)
+                .header("anthropic-version", ANTHROPIC_VERSION)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("API request failed with status " + response.statusCode() + ": " + response.body());
+        }
+
+        JSONObject responseJson = new JSONObject(response.body());
+        JSONArray content = responseJson.getJSONArray("content");
+        if (content.length() > 0) {
+            return content.getJSONObject(0).getString("text");
+        }
+        return "{}";
+    }
+
     private void generateQuiz() {
-        if (client == null) {
-            quizStatusLabel.setText("OpenAI client not initialized.");
+        if (httpClient == null || apiKey == null) {
+            quizStatusLabel.setText("Claude client not initialized.");
             return;
         }
 
@@ -98,10 +135,11 @@ public class QuizController {
 
         CompletableFuture.supplyAsync(() -> {
             try {
-                String prompt = """
-                        Generate a JSON array of exactly 6 creative, fun, and quirky multiple-choice questions 
+                String systemMessage = "You are a creative quiz generator. Output only valid JSON.";
+                String userMessage = """
+                        Generate a JSON array of exactly 6 creative, fun, and quirky multiple-choice questions
                         to determine what a user should eat. Each question should have 3-4 answer options.
-                        
+
                         Format as an array of objects:
                         [
                           {
@@ -110,25 +148,16 @@ public class QuizController {
                           },
                           ...
                         ]
-                        
-                        Include varied questions about mood, flavor preferences, textures, cuisine types, 
+
+                        Include varied questions about mood, flavor preferences, textures, cuisine types,
                         eating context, and adventurousness.
-                        
+
                         Make options concise (1-2 words) and varied (3-4 options per question).
                         Output ONLY valid JSON, nothing else.
                         """;
 
-                ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_4)
-                        .addSystemMessage("You are a creative quiz generator. Output only valid JSON.")
-                        .addUserMessage(prompt)
-                        .maxTokens(800L)
-                        .temperature(0.9)
-                        .build();
-
-                System.out.println("Sending request to OpenAI for quiz generation...");
-                ChatCompletion completion = client.chat().completions().create(params);
-                String response = completion.choices().get(0).message().content().orElse("[]");
+                System.out.println("Sending request to Claude for quiz generation...");
+                String response = callClaudeApi(systemMessage, userMessage, 800, 0.9);
                 System.out.println("Received response: " + response);
 
                 return response;
@@ -187,7 +216,6 @@ public class QuizController {
         });
     }
 
-    // Creates a question card with button options
     private VBox createQuestionCard(int number, String question, JSONArray options) {
         VBox card = new VBox(12);
         card.setStyle(
@@ -222,7 +250,6 @@ public class QuizController {
                             "-fx-cursor: hand;"
             );
 
-            // Hover effect
             optionButton.setOnMouseEntered(e -> {
                 if (!optionButton.isSelected()) {
                     optionButton.setStyle(
@@ -251,7 +278,6 @@ public class QuizController {
                 }
             });
 
-            // Selected style
             optionButton.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
                 if (isSelected) {
                     optionButton.setStyle(
@@ -297,8 +323,8 @@ public class QuizController {
 
     @FXML
     private void generateRecommendation() {
-        if (client == null) {
-            showError("Error", "System not ready", "OpenAI client is not initialized.");
+        if (httpClient == null || apiKey == null) {
+            showError("Error", "System not ready", "Claude client is not initialized.");
             return;
         }
 
@@ -339,12 +365,12 @@ public class QuizController {
             try {
                 String restaurantList = buildRestaurantListText();
 
-                String systemPrompt = String.format("""
+                String systemMessage = String.format("""
                         You are a helpful food recommendation assistant.
-                        
+
                         AVAILABLE RESTAURANTS:
                         %s
-                        
+
                         RULES:
                         1. You MUST ONLY recommend restaurants from the list above
                         2. Choose the single best match based on user preferences
@@ -355,21 +381,12 @@ public class QuizController {
                           "reason": "2-3 sentence explanation of why this matches their preferences",
                           "alternatives": ["alternative 1 name", "alternative 2 name"]
                         }
-                        
+
                         Do not include any text outside the JSON object.
                         """, restaurantList);
 
-                ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-                        .model(ChatModel.GPT_4)
-                        .addSystemMessage(systemPrompt)
-                        .addUserMessage(preferences.toString())
-                        .maxTokens(400L)
-                        .temperature(0.5)
-                        .build();
-
-                System.out.println("Sending request to OpenAI for recommendation...");
-                ChatCompletion completion = client.chat().completions().create(params);
-                String response = completion.choices().get(0).message().content().orElse("{}");
+                System.out.println("Sending request to Claude for recommendation...");
+                String response = callClaudeApi(systemMessage, preferences.toString(), 400, 0.5);
                 System.out.println("Received recommendation: " + response);
 
                 return response;
@@ -396,7 +413,6 @@ public class QuizController {
                 quizStatusLabel.setText("Found your perfect match!");
                 submitButton.setDisable(false);
 
-                // Show the recommendation overlay
                 showRecommendationOverlay(restaurant, reason, alternatives);
 
             } catch (Exception e) {
@@ -417,11 +433,9 @@ public class QuizController {
         });
     }
 
-    // Displays an overlay with the restaurant recommendation
     private void showRecommendationOverlay(Restaurant restaurant, String reason, JSONArray alternatives) {
         recommendationCard.getChildren().clear();
 
-        // Close button
         Button closeButton = new Button("X");
         closeButton.setStyle(
                 "-fx-background-color: transparent;" +
@@ -585,7 +599,6 @@ public class QuizController {
         overlayPane.setVisible(true);
     }
 
-    // Opens the restaurant location in Maps
     private void openInMaps(Restaurant restaurant) {
         if (restaurant != null && restaurant.location() != null && !restaurant.location().isBlank()) {
             try {
@@ -596,7 +609,6 @@ public class QuizController {
         }
     }
 
-    // Hides the overlay popup
     private void hideOverlay() {
         overlayPane.setVisible(false);
     }
